@@ -1,3 +1,10 @@
+.epigtor-panel {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  background-color: white;
+}
+
 .control-epigtor {
   display: none;
   position: absolute;

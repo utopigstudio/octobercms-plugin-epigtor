@@ -32,10 +32,15 @@
         $(document.body).append(this.$controlPanel)
 
         this.$el.on('mousemove', function(){
-            self.refreshControlPanel()
+            if (epigtorIsEditing) {
+                self.refreshControlPanel()
+            }
         })
 
-        this.$controlPanel.on('mouseenter', function(){ self.refreshControlPanel() })
+        // is this needed?
+        // this.$controlPanel.on('mouseenter', function(){
+        //     self.refreshControlPanel();
+        // })
 
         self.showControlPanel()
 
@@ -165,9 +170,9 @@
         var args = Array.prototype.slice.call(arguments, 1)
         return this.each(function () {
             var $this   = $(this)
-            var data    = $this.data('oc.example')
+            var data    = $this.data('oc.epigtor')
             var options = $.extend({}, Epigtor.DEFAULTS, $this.data(), typeof option == 'object' && option)
-            if (!data) $this.data('oc.example', (data = new Epigtor(this, options)))
+            if (!data) $this.data('oc.epigtor', (data = new Epigtor(this, options)))
             else if (typeof option == 'string') data[option].apply(data, args)
         })
     }
@@ -186,13 +191,15 @@
     // ===============
 
     $(document).on('mouseenter', '[data-control="epigtor"]', function() {
-        $(this).epigtor()
+        if (epigtorIsEditing) {
+            $(this).epigtor();
+        }
     });
 
     $(window).scroll(function() {
         $(document).find('[data-control="epigtor"]').each(function(){
-            if ($(this).data('oc.example') != undefined)
-                $(this).data('oc.example').hideControlPanel()
+            if ($(this).data('oc.epigtor') != undefined)
+                $(this).data('oc.epigtor').hideControlPanel()
         })
     });
 
