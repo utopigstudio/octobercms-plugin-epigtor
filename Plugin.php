@@ -23,7 +23,7 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Utopigs\Epigtor\Components\Epigtor' => 'epigtor',
+            'Utopigs\Epigtor\Components\Epigtor' => 'editme',
         ];
     }
 
