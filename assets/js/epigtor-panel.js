@@ -9,7 +9,7 @@ var epigtorIsEditing = false;
 
     var $controlPanel = $('<div />').addClass('epigtor-panel')
     var $editButton = $('<button />').addClass('epigtor-panel-edit').text('Edit').appendTo($controlPanel)
-    var $cancelButton = $('<button />').addClass('epigtor-panel-edit').text('Finish editing').hide().appendTo($controlPanel)
+    var $cancelButton = $('<button />').addClass('epigtor-panel-edit epigtor-panel-finish').text('Finish editing').hide().appendTo($controlPanel)
 
     $(document.body).append($controlPanel)
 

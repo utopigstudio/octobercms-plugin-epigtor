@@ -1,8 +1,18 @@
 .epigtor-panel {
   position: fixed;
-  bottom: 0px;
-  right: 0px;
+  bottom: 8px;
+  left: 9px;
+}
+
+.epigtor-panel-edit {
+  padding: 4px 9px;
+  border-radius: 10px;
   background-color: white;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 30%);
+}
+
+.epigtor-panel-finish {
+  background-color: #ed9c57;
 }
 
 .control-epigtor {
@@ -155,4 +165,8 @@
   text-decoration:inherit;
   display:inline-block;
   speak:none
+}
+
+.fr-toolbar.fr-top {
+  position: sticky;
 }
