@@ -135,6 +135,8 @@ class Epigtor extends ComponentBase
         $this->type = $this->property('type') ?: 'plain';
         $this->toolbarButtons = $this->property('toolbarButtons');
         $this->showDelete = $this->property('showDelete', false);
+        $this->model_class = NULL;
+        $this->model_id = NULL;
 
         if ($this->property('model')) {
             $model = clone $this->property('model');
@@ -162,6 +164,12 @@ class Epigtor extends ComponentBase
 
         if (in_array($this->type, ['plain', 'richeditor'])) {
             if (!$this->isEditor) {
+                //reset properties for next component
+                $this->setProperty('type', '');
+                $this->setProperty('toolbarButtons', '');
+                $this->setProperty('content', '');
+                $this->setProperty('showDelete', false);
+                $this->setProperty('model', '');
                 return $content;
             }
     
@@ -245,8 +253,6 @@ class Epigtor extends ComponentBase
         $this->setProperty('content', '');
         $this->setProperty('showDelete', false);
         $this->setProperty('model', '');
-        $this->model_class = NULL;
-        $this->model_id = NULL;
     }
 
     protected function decorateFileAttributes($file)
