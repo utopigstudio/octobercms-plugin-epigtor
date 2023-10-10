@@ -20,6 +20,7 @@
         this.uploadHandler = this.$el.data('upload-handler');
         this.csrfToken = this.$el.data('csrf-token');
         this.editMessage = this.$el.data('message');
+        this.editModel = null;
         if (this.$el.data('model') && this.$el.data('id')) {
             this.editModel = {'model': this.$el.data('model'), 'id': this.$el.data('id')}
         }

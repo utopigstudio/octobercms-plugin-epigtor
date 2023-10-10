@@ -96,33 +96,33 @@ class Epigtor extends ComponentBase
             $this->addCss('assets/vendor/redactor/redactor.css');
             $this->addJs('assets/vendor/redactor/redactor.js');
 
-            $this->addJs('/modules/system/assets/ui/js/foundation.baseclass.js');
-            $this->addJs('/modules/system/assets/ui/js/foundation.controlutils.js');
-            $this->addCss('/modules/backend/formwidgets/richeditor/assets/css/richeditor.css', 'core');
-            $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-min.js', 'core');
-            $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-plugins-min.js', 'core');
-            $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js', 'core');
+            // $this->addJs('/modules/system/assets/ui/js/foundation.baseclass.js');
+            // $this->addJs('/modules/system/assets/ui/js/foundation.controlutils.js');
+            // $this->addCss('/modules/backend/formwidgets/richeditor/assets/css/richeditor.css', 'core');
+            // $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-min.js', 'core');
+            // $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-plugins-min.js', 'core');
+            // $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js', 'core');
 
-            $this->addJs('/modules/backend/assets/js/october.lang.js');
-            $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
-            $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
+            // $this->addJs('/modules/backend/assets/js/october.lang.js');
+            // $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
+            // $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
 
-            $this->addJs('/modules/system/assets/ui/js/select.js');
+            // $this->addJs('/modules/system/assets/ui/js/select.js');
 
-            $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
-            if ($froala_custom_defaults) {
-                $this->addJs('/storage/app/media/utopigs_epigtor/'.$froala_custom_defaults);
-            }
+            // $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
+            // if ($froala_custom_defaults) {
+            //     $this->addJs('/storage/app/media/utopigs_epigtor/'.$froala_custom_defaults);
+            // }
 
             $this->paragraphFormats = EditorSetting::getConfiguredFormats('html_paragraph_formats') ? json_encode(EditorSetting::getConfiguredFormats('html_paragraph_formats')) : null;
 
             $this->addCss('assets/css/epigtor.css?v=2.0.0');
             $this->addJs('assets/js/epigtor-panel.js?v=2.0.0');
-            $this->addJs('assets/js/epigtor.js?v=2.0.0');
-            $this->addJs('assets/js/epigtor-image.js?v=2.0.0');
-            $this->addJs('assets/js/epigtor-link.js?v=2.0.0');
+            $this->addJs('assets/js/epigtor.js?v=2.0.0.1');
+            // $this->addJs('assets/js/epigtor-image.js?v=2.0.0');
+            // $this->addJs('assets/js/epigtor-link.js?v=2.0.0');
 
-            $this->ace_vendor_path = Url::asset('/modules/backend/formwidgets/codeeditor/assets/vendor/ace');
+            // $this->ace_vendor_path = Url::asset('/modules/backend/formwidgets/codeeditor/assets/vendor/ace');
 
             $this->csrf_token = csrf_token();
         }
@@ -293,9 +293,11 @@ class Epigtor extends ComponentBase
             $model->$key = $content;
             $model->save();
         } else {
-            $message = Message::where('code', Message::makeMessageCode($key))->first();
-            if ($content != $message->forLocale($locale)) {
-                $message->toLocale($locale, $content);
+            $messages = Message::where('locale', $locale)->first();
+            $message = $messages->data[$key];
+
+            if ($content != $message) {
+                $messages->updateMessage($locale, $key, $content);
                 CacheHelper::clear();
             }
         }
