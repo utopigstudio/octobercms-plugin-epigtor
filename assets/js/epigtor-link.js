@@ -166,7 +166,7 @@
                 that.originalExternalUrl = newExternalUrl;
                 that.originalReference = newReference;
                 that.originalIsNewTab = newIsNewTab;
-                that.linkId = response.responseJSON.link.id;
+                that.linkId = response.link.id;
                 that.$delete.show();
 
                 that.hideLinkWidget();
@@ -231,7 +231,7 @@
         var that = this;
         $.request(this.requestHandlerTypeOptions, {
             complete: function(response) {
-                let options = response.responseJSON.options;
+                let options = response.options;
                 Object.keys(options).forEach(key => {
                     let option = new Option(options[key], key);
                     if (that.originalType == key) {
@@ -271,7 +271,7 @@
                 type: that.$linkType.val()
             },
             complete: function(response) {
-                let options = response.responseJSON.options;
+                let options = response.options;
                 Object.keys(options).forEach(key => {
                     let option = new Option(options[key], key);
                     if (that.originalReference == key) {

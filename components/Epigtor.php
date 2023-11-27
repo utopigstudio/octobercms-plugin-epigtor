@@ -100,9 +100,7 @@ class Epigtor extends ComponentBase
             $this->addJs('assets/vendor/oc2/foundation.controlutils.js');
             $this->addCss('assets/vendor/oc2/richeditor/assets/css/richeditor.css', 'core');
             $this->addJs('assets/vendor/oc2/richeditor/assets/js/build-min.js', 'core');
-            // $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-min.js', 'core');
             $this->addJs('assets/vendor/oc2/richeditor/assets/js/build-plugins-min.js', 'core');
-            // $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js', 'core');
             $this->addJs('assets/vendor/oc2/codeeditor/assets/js/build-min.js', 'core');
 
             // $this->addJs('/modules/backend/assets/js/october.lang.js');
@@ -122,9 +120,9 @@ class Epigtor extends ComponentBase
             $this->addJs('assets/js/epigtor-panel.js?v=2.0.0');
             $this->addJs('assets/js/epigtor.js?v=2.0.0.1');
             // $this->addJs('assets/js/epigtor-image.js?v=2.0.0');
-            // $this->addJs('assets/js/epigtor-link.js?v=2.0.0');
+            $this->addJs('assets/js/epigtor-link.js?v=2.0.0');
 
-            // $this->ace_vendor_path = Url::asset('/modules/backend/formwidgets/codeeditor/assets/vendor/ace');
+            $this->ace_vendor_path = Url::asset('/plugins/utopigs/epigtor/assets/vendor/oc2/codeeditor/assets/vendor/ace');
 
             $this->csrf_token = csrf_token();
         }
