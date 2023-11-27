@@ -103,9 +103,9 @@ class Epigtor extends ComponentBase
             $this->addJs('assets/vendor/oc2/richeditor/assets/js/build-plugins-min.js', 'core');
             $this->addJs('assets/vendor/oc2/codeeditor/assets/js/build-min.js', 'core');
 
-            // $this->addJs('/modules/backend/assets/js/october.lang.js');
-            // $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
-            // $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
+            $this->addJs('/modules/backend/assets/js/october/october.lang.js');
+            $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
+            $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
 
             // $this->addJs('/modules/system/assets/ui/js/select.js');
 
@@ -119,7 +119,7 @@ class Epigtor extends ComponentBase
             $this->addCss('assets/css/epigtor.css?v=2.0.0');
             $this->addJs('assets/js/epigtor-panel.js?v=2.0.0');
             $this->addJs('assets/js/epigtor.js?v=2.0.0.1');
-            // $this->addJs('assets/js/epigtor-image.js?v=2.0.0');
+            $this->addJs('assets/js/epigtor-image.js?v=2.0.0');
             $this->addJs('assets/js/epigtor-link.js?v=2.0.0');
 
             $this->ace_vendor_path = Url::asset('/plugins/utopigs/epigtor/assets/vendor/oc2/codeeditor/assets/vendor/ace');

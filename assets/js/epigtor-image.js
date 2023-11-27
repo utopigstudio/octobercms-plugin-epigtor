@@ -160,8 +160,8 @@
 
                     $preview.addClass('is-success');
             
-                    if (response.responseJSON.image) {
-                        var content = response.responseJSON.image;
+                    if (response.image) {
+                        var content = response.image;
                         $preview.data('id', content.id);
                         $preview.data('path', content.pathUrl);
                         var $img = $('.image img', $preview);
@@ -198,7 +198,7 @@
                     save: 1,
                 },
                 complete: function(response) {
-                    that.imageId = response.responseJSON.image.id;
+                    that.imageId = response.image.id;
                     that.saveTitle();
                     that.$delete.show();
                     that.hideImageWidget();

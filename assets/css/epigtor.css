@@ -14104,8 +14104,8 @@
 
 @font-face {
   font-family: "octo-icon";
-  src: url("../../../../../../modules/system/assets/ui/font/octo-icon.eot?symvb&v=@{icon-font-version");
-  src: url("../../../../../../modules/system/assets/ui/font/octo-icon.eot?symvb#iefix&v=@{icon-font-version") format("embedded-opentype"), url("../../../../../../modules/system/assets/ui/font/octo-icon.ttf?symvb&v=@{icon-font-version") format("truetype"), url("../../../../../../modules/system/assets/ui/font/octo-icon.woff?symvb&v=@{icon-font-version") format("woff"), url("../../../../../../modules/system/assets/ui/font/octo-icon.svg?symvb#octo-icon&v=@{icon-font-version}") format("svg");
+  src: url("../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.eot?symvb&v=@{icon-font-version");
+  src: url("../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.eot?symvb#iefix&v=@{icon-font-version") format("embedded-opentype"), url("../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.ttf?symvb&v=@{icon-font-version") format("truetype"), url("../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.woff?symvb&v=@{icon-font-version") format("woff"), url("../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.svg?symvb#octo-icon&v=@{icon-font-version}") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
