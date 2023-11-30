@@ -294,7 +294,7 @@ class Epigtor extends ComponentBase
             $model->save();
         } else {
             $messages = Message::where('locale', $locale)->first();
-            $message = $messages->data[$key];
+            $message = $messages->data[$key] ?? '';
 
             if ($content != $message) {
                 $messages->updateMessage($locale, $key, $content);
