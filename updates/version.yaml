@@ -7,3 +7,4 @@ v2.0.3: Fix font size in richeditor
 v3.0.0: OctoberCMS 3.0 compatibility
 v3.0.1: Fix if message does not exist
 v3.0.2: Improve image edition
+v3.0.3: Composer version restriction
