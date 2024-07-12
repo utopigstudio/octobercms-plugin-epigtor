@@ -137,6 +137,7 @@ class Epigtor extends ComponentBase
         $this->showDelete = $this->property('showDelete', false);
         $this->model_class = NULL;
         $this->model_id = NULL;
+        $this->content = NULL;
 
         if ($this->property('model')) {
             $model = clone $this->property('model');
