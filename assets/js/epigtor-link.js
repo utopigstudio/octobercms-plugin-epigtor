@@ -39,6 +39,7 @@
         this.labelLinkReference = this.$el.data('label-link-reference');
         this.labelLinkIsNewTab = this.$el.data('label-link-is-new-tab');
         this.elementId = this.$el.data('element-id');
+        this.cssClass = this.$el.data('css-class');
 
         this.$linkContainer = $(epigtorLinkModalHtml(this.linkContent, this.elementId,
             this.showDelete, this.labelDelete, this.labelSave, this.labelCancel, this.labelLinkText, this.labelLinkType, this.labelLinkUrl,
@@ -159,6 +160,7 @@
                 external_url: newExternalUrl,
                 reference: newReference,
                 is_new_tab: newIsNewTab ? 1 : 0,
+                cssClass: this.cssClass,
             },
             complete: function(response) {
                 that.originalText = newText;

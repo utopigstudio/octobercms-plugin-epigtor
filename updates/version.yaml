@@ -9,3 +9,4 @@ v3.0.1: Fix if message does not exist
 v3.0.2: Improve image edition
 v3.0.3: Composer version restriction
 v3.0.4: Fix bug when translate message is empty
+v3.0.5: Allow to pass cssClass to link partial

@@ -50,6 +50,7 @@ class Epigtor extends ComponentBase
     public $labelLinkUrl;
     public $labelLinkReference;
     public $labelLinkIsNewTab;
+    public $cssClass;
 
     /**
      * @var int imageWidth for preview
@@ -138,6 +139,7 @@ class Epigtor extends ComponentBase
         $this->model_class = NULL;
         $this->model_id = NULL;
         $this->content = NULL;
+        $this->cssClass = $this->property('cssClass');
 
         if ($this->property('model')) {
             $model = clone $this->property('model');
@@ -171,6 +173,7 @@ class Epigtor extends ComponentBase
                 $this->setProperty('content', '');
                 $this->setProperty('showDelete', false);
                 $this->setProperty('model', '');
+                $this->setProperty('cssClass', '');
                 return $content;
             }
     
@@ -254,6 +257,7 @@ class Epigtor extends ComponentBase
         $this->setProperty('content', '');
         $this->setProperty('showDelete', false);
         $this->setProperty('model', '');
+        $this->setProperty('cssClass', '');
     }
 
     protected function decorateFileAttributes($file)
@@ -479,6 +483,7 @@ class Epigtor extends ComponentBase
         $modelClass = post('model')['model'];
         $modelId = post('model')['id'];
         $attribute = post('message');
+        $cssClass = post('cssClass');
 
         if ($linkId) {
             $link = Link::findOrFail($linkId);
@@ -512,7 +517,8 @@ class Epigtor extends ComponentBase
         return [
             'link' => $link,
             '#epigtor-'.$widgetId => $this->renderPartial($linkPartial, [
-                'link' => $link
+                'link' => $link,
+                'cssClass' => $cssClass
             ])
         ];
     }

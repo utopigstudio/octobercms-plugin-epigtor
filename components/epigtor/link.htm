@@ -23,10 +23,12 @@
     data-label-link-is-new-tab="{{ __SELF__.labelLinkIsNewTab }}"
     data-link-content = "{{ __SELF__.content }}"
     data-show-delete="{{ __SELF__.showDelete ? 'true' : 'false' }}"
-    data-element-id="{{ __SELF__.uploadId }}">
+    data-element-id="{{ __SELF__.uploadId }}"
+    data-css-class="{{ __SELF__.cssClass }}"
+    >
     {% if __SELF__.content %}
     <span id="epigtor-{{ __SELF__.uploadId }}">
-        {% partial __SELF__.linkPartial link=__SELF__.content %}
+        {% partial __SELF__.linkPartial link=__SELF__.content cssClass=__SELF__.cssClass %}
     </span>
     {% else %}
     <span id="epigtor-{{ __SELF__.uploadId }}">
@@ -35,5 +37,5 @@
     {% endif %}
 </span>
 {% else %}
-    {% partial __SELF__.linkPartial link=__SELF__.content %}
+    {% partial __SELF__.linkPartial link=__SELF__.content cssClass=__SELF__.cssClass %}
 {% endif %}
