@@ -122,6 +122,7 @@ class Epigtor extends ComponentBase
             $this->addCss('assets/css/epigtor.css?v=3.0.2');
             $this->addJs('assets/js/epigtor-panel.js?v=3.0.2');
             $this->addJs('assets/js/epigtor.js?v=3.0.2');
+            $this->addJs('assets/js/epigtor-richeditor.js?v=3.0.2');
             $this->addJs('assets/js/epigtor-image.js?v=3.0.2');
             $this->addJs('assets/js/epigtor-link.js?v=3.0.2');
 

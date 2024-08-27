@@ -5,13 +5,5 @@
 {% elseif __SELF__.type == 'richeditor' %}
     {% partial __SELF__~'::richeditor' %}
 {% else %}
-<span
-    data-control="epigtor"
-    data-type="plain"
-    data-handler="{{ __SELF__ }}::onSave"
-    data-message="{{ __SELF__.message }}"
-    data-model="{{ __SELF__.model_class }}"
-    data-id="{{ __SELF__.model_id }}">
-    {{ __SELF__.content|raw }}
-</span>
+    {% partial __SELF__~'::plain' %}
 {% endif %}

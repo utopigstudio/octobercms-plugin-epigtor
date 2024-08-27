@@ -36,6 +36,17 @@ var epigtorIsEditing = false;
                 $epigtor.hideControlPanel()
             }
         });
+
+        $(document).find('[data-control="epigtor-richeditor"]').each(function(){
+            let $epigtor = $(this).data('oc.epigtorRicheditor');
+            if ($epigtor != undefined) {
+                let $epigtor = $(this).data('oc.epigtorRicheditor');
+                if ($epigtor.$controlPanel.hasClass('active')) {
+                    $epigtor.clickCancel();
+                }
+                $epigtor.hideControlPanel()
+            }
+        });
  
         $(document).find('[data-control="epigtor-image"]').each(function(){
             let $epigtor = $(this).data('oc.epigtorImage');
@@ -113,6 +124,10 @@ function hideControlPanels() {
         if ($(this).data('oc.epigtor') != undefined) {
             $(this).data('oc.epigtor').hideControlPanel()
         }
+    });
+    $(document).find('[data-control="epigtor-richeditor"]').each(function(){
+        if ($(this).data('oc.epigtorRicheditor') != undefined)
+            $(this).data('oc.epigtorRicheditor').hideControlPanel()
     });
     $(document).find('[data-control="epigtor-image"]').each(function(){
         if ($(this).data('oc.epigtorImage') != undefined) {

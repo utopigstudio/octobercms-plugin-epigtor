@@ -8,13 +8,16 @@
     // EPIGTOR CLASS DEFINITION
     // ============================
 
-    var Epigtor = function(element, options) {
+    var EpigtorRicheditor = function(element, options) {
         var self       = this
         this.options   = options
         this.$el       = $(element)
 
         this.originalHtml = null;
+        this.richEditor = null;
         this.requestHandler = this.$el.data('handler');
+        this.uploadHandler = this.$el.data('upload-handler');
+        this.csrfToken = this.$el.data('csrf-token');
         this.editMessage = this.$el.data('message');
         this.editModel = null;
         if (this.$el.data('model') && this.$el.data('id')) {
@@ -25,6 +28,8 @@
         this.$edit = $('<button />').addClass('epigtor-edit-button').text('Edit').appendTo(this.$controlPanel)
         this.$save = $('<button />').addClass('epigtor-save-button').text('Save').hide().appendTo(this.$controlPanel)
         this.$cancel = $('<button />').addClass('epigtor-cancel-button').text('Cancel').hide().appendTo(this.$controlPanel)
+
+        this.toolbarButtons = this.$el.data('toolbar-buttons');
 
         $(document.body).append(this.$controlPanel)
 
@@ -41,14 +46,15 @@
         this.$cancel.on('click', function(){ self.clickCancel() })
     }
 
-    Epigtor.DEFAULTS = {
+    EpigtorRicheditor.DEFAULTS = {
         option: 'default'
     }
 
-    Epigtor.prototype.clickCancel = function() {
-        this.$el.redactor('code.set', this.originalHtml)
-        this.$el.redactor('core.destroy')
-        this.$el.html(this.originalHtml);
+    EpigtorRicheditor.prototype.clickCancel = function() {
+        this.richEditor.data('oc.richEditor').setContent(this.originalHtml);
+        this.richEditor.data('oc.richEditor').dispose();
+        this.richEditor.find('>div>textarea:first').hide();
+        this.$el.find('>.rendered').show();
         this.refreshControlPanel()
         this.$controlPanel.removeClass('active')
         this.$edit.show()
@@ -56,9 +62,14 @@
         this.$cancel.hide()
     }
 
-    Epigtor.prototype.clickSave = function() {
-        var html = this.$el.redactor('code.get')
-        this.$el.redactor('core.destroy')
+    EpigtorRicheditor.prototype.clickSave = function() {
+        var html =this.richEditor.data('oc.richEditor').getContent();
+        this.richEditor.data('oc.richEditor').dispose();
+        this.$el.find('>.epigtor-richeditor:first')[0].dataset.control = '';
+        this.richEditor.find('>div>textarea:first').hide();
+        this.$el.find('>.rendered').html(html);
+        this.$el.find('>.unrendered').html(html);
+        this.$el.find('>.rendered').show();
         this.refreshControlPanel()
         this.$controlPanel.removeClass('active')
         this.$edit.show()
@@ -69,20 +80,36 @@
                 message: this.editMessage,
                 content: html,
                 model: this.editModel,
-                type: 'plain',
+                type: 'richeditor',
             }
         })
     }
 
-    Epigtor.prototype.clickEdit = function() {
-        this.originalHtml = this.$el.html();
+    EpigtorRicheditor.prototype.clickEdit = function() {
+        this.originalHtml = this.$el.find('>.unrendered').html();
 
-        this.$el.redactor({
-            focus: true,
-            toolbar: false,
-            paragraphize: false,
-            linebreaks: true
+        this.$el.find('>.epigtor-richeditor:first')[0].dataset.control = 'richeditor';
+
+        this.richEditor = this.$el.find('>.epigtor-richeditor:first').richEditor({
+            toolbarButtons: this.toolbarButtons,
         });
+
+        var richEditorOpts = this.richEditor.data('oc.richEditor').editor.opts;
+
+        // Ensure that October recognizes AJAX requests from Froala
+        richEditorOpts.requestHeaders = {
+            'X-CSRF-TOKEN': this.csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+
+        richEditorOpts.imageUploadURL = richEditorOpts.fileUploadURL = window.location;
+        richEditorOpts.imageUploadParam = richEditorOpts.fileUploadParam = 'file_data';
+        richEditorOpts.imageUploadParams = richEditorOpts.fileUploadParams = {
+            _handler: this.uploadHandler,
+            X_OCTOBER_MEDIA_MANAGER_QUICK_UPLOAD: 1
+        };
+
+        this.$el.find('>.rendered').hide();
 
         this.refreshControlPanel();
         this.$controlPanel.addClass('active');
@@ -93,11 +120,11 @@
         hideControlPanels();
     }
 
-    Epigtor.prototype.hideControlPanel = function() {
+    EpigtorRicheditor.prototype.hideControlPanel = function() {
         this.$controlPanel.removeClass('visible');
     }
 
-    Epigtor.prototype.refreshControlPanel = function() {
+    EpigtorRicheditor.prototype.refreshControlPanel = function() {
         if (!this.$controlPanel.hasClass('visible')) {
             this.showControlPanel();
         }
@@ -111,7 +138,7 @@
             });
     }
 
-    Epigtor.prototype.showControlPanel = function() {
+    EpigtorRicheditor.prototype.showControlPanel = function() {
         this.$controlPanel.addClass('visible');
         if (!this.$controlPanel.hasClass('active')) {
             this.refreshControlPanel();
@@ -121,40 +148,34 @@
     // EPIGTOR PLUGIN DEFINITION
     // ============================
 
-    var old = $.fn.epigtor
+    var old = $.fn.epigtorRicheditor
 
-    $.fn.epigtor = function () {
+    $.fn.epigtorRicheditor = function () {
         return this.each(function () {
             var $this   = $(this)
-            var data    = $this.data('oc.epigtor')
-            var options = $.extend({}, Epigtor.DEFAULTS, $this.data())
-            if (!data) $this.data('oc.epigtor', (data = new Epigtor(this, options)));
+            var data    = $this.data('oc.epigtorRicheditor')
+            var options = $.extend({}, EpigtorRicheditor.DEFAULTS, $this.data())
+            if (!data) $this.data('oc.epigtorRicheditor', (data = new EpigtorRicheditor(this, options)));
         })
     }
 
-    $.fn.epigtor.Constructor = Epigtor
+    $.fn.epigtorRicheditor.Constructor = EpigtorRicheditor
 
     // EPIGTOR NO CONFLICT
     // =================
 
-    $.fn.epigtor.noConflict = function () {
-        $.fn.epigtor = old
+    $.fn.epigtorRicheditor.noConflict = function () {
+        $.fn.epigtorRicheditor = old
         return this
     }
 
     // EPIGTOR DATA-API
     // ===============
 
-    $(document).on('mouseenter', '[data-control="epigtor"]', function() {
+    $(document).on('mouseenter', '[data-control="epigtor-richeditor"]', function() {
         if (epigtorIsEditing) {
-            $(this).epigtor();
+            $(this).epigtorRicheditor();
         }
-    });
-
-    $(document).on('click','.redactor-editor',function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
     });
 
 }(window.jQuery);

@@ -1,5 +1,5 @@
 <div
-    data-control="epigtor"
+    data-control="epigtor-richeditor"
     data-type="richeditor"
     data-handler="{{ __SELF__ }}::onSave"
     data-message="{{ __SELF__.message }}"
@@ -11,6 +11,7 @@
     {% elseif __SELF__.globalToolbarButtons %}data-toolbar-buttons="{{ __SELF__.globalToolbarButtons }}"
     {% endif %}">
     <div class="rendered">{{ __SELF__.content|content }}</div>
+    <div class="unrendered" style="display:none">{{ __SELF__.content|raw }}</div>
     <div
         class="epigtor-richeditor"
         {% if __SELF__.paragraphFormats %}data-paragraph-format="{{ __SELF__.paragraphFormats }}"{% endif %}
