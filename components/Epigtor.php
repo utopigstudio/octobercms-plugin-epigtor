@@ -6,69 +6,38 @@ use Cms\Classes\ComponentBase;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Message;
 use System\Helpers\Cache as CacheHelper;
-use Media\Widgets\MediaManager;
 use Backend\Models\EditorSetting;
 use Url;
-use Input;
-use ApplicationException;
-use Lang;
-use Response;
-use System\Models\File;
 use Utopigs\Banners\Models\Image;
+use Utopigs\Epigtor\Traits\EpigtorImage;
+use Utopigs\Epigtor\Traits\EpigtorLink;
+use Utopigs\Epigtor\Traits\EpigtorPlain;
+use Utopigs\Epigtor\Traits\EpigtorRicheditor;
 use Utopigs\Linkable\Models\Link;
 
 class Epigtor extends ComponentBase
 {
+    use EpigtorPlain;
+    use EpigtorRicheditor;
+    use EpigtorImage;
+    use EpigtorLink;
+
     public $content;
     public $isEditor;
     public $message;
     public $model_class;
     public $model_id;
-    public $ace_vendor_path;
     public $type;
-    public $toolbarButtons;
-    public $globalToolbarButtons;
-    public $paragraphFormats;
     public $csrf_token;
-    public $imagePartial;
-    public $imageEmptyPartial;
     public $refreshCode;
     public $uploadId;
-    public $linkPartial;
-    public $linkEmptyPartial;
     public $labelCreate;
     public $showDelete;
     public $labelDelete;
     public $labelDeleteConfirm;
     public $labelSave;
     public $labelCancel;
-    public $labelUpload;
-    public $labelReplace;
-    public $labelImageTitle;
-    public $labelLinkText;
-    public $labelLinkType;
-    public $labelLinkUrl;
-    public $labelLinkReference;
-    public $labelLinkIsNewTab;
     public $cssClass;
-
-    /**
-     * @var int imageWidth for preview
-     */
-    public $imageWidth = 190;
-
-    /**
-     * @var int imageHeight for preview
-     */
-    public $imageHeight = 190;
-
-    /**
-     * @var array thumbOptions used for generating thumbnails
-     */
-    public $thumbOptions = [
-        'mode'      => 'crop',
-        'extension' => 'auto'
-    ];
 
     public function componentDetails()
     {
@@ -194,112 +163,6 @@ class Epigtor extends ComponentBase
         }
     }
 
-    private function renderPlain($content)
-    {
-        //convert nl2br
-        $content = nl2br($content);
-        //replace paragraphs with break lines
-        $content = str_replace(array('<p>','</p>'),array('','<br />'), $content);
-        //remove all html tags except break lines
-        $content = strip_tags($content, '<br>');
-        //remove EOL
-        $content = preg_replace( "/\r|\n/", "", $content);
-        //remove excess <br> or <br /> from the end of the text
-        $content = preg_replace('#(( ){0,}<br( {0,})(/{0,1})>){1,}$#i', '', $content);
-
-        if (!$this->isEditor) {
-            return $content;
-        }
-
-        if (!$content) {
-            $content = "[empty]";
-        }
-
-        $this->content = $content;
-    }
-
-    private function renderRicheditor($content)
-    {
-        if (!$this->isEditor) {
-            return $content;
-        }
-
-        if (!$content) {
-            $content = "[empty]";
-        }
-
-        $this->content = $content;
-    }
-
-    private function renderImage($content)
-    {
-        if ($content && !$content->title) {
-            $content->title_default = $this->property('alt');
-        }
-        $this->imagePartial = $this->property('partial');
-        $this->imageEmptyPartial = $this->alias.'::image-empty';
-
-        if ($this->isEditor) {
-            $content = $this->decorateFileAttributes($content);
-            if ($this->model_class) {
-                $this->uploadId = str_slug($this->model_class).'-'.$this->model_id.'-'.$this->message;
-            } else {
-                $this->uploadId = 'image-'.$this->message;
-            }
-            $this->refreshCode = $this->property('refresh');
-            $this->labelCreate = Lang::get('utopigs.epigtor::lang.image.create');
-            $this->labelDelete = Lang::get('utopigs.epigtor::lang.image.delete');
-            $this->labelDeleteConfirm = Lang::get('utopigs.epigtor::lang.image.delete_confirm');
-            $this->labelSave = Lang::get('utopigs.epigtor::lang.image.save');
-            $this->labelCancel = Lang::get('utopigs.epigtor::lang.image.cancel');
-            $this->labelUpload = Lang::get('utopigs.epigtor::lang.image.upload');
-            $this->labelReplace = Lang::get('utopigs.epigtor::lang.image.replace');
-            $this->labelImageTitle = Lang::get('utopigs.epigtor::lang.image.title');
-        }
-
-        $this->content = $content;
-    }
-
-    private function renderLink($content)
-    {
-        $this->linkPartial = $this->property('partial');
-        $this->linkEmptyPartial = $this->alias.'::link-empty';
-        if ($this->isEditor) {
-            if ($this->model_class) {
-                $this->uploadId = str_slug($this->model_class).'-'.$this->model_id.'-'.$this->message;
-            } else {
-                $this->uploadId = 'link-'.$this->message;
-            }
-            $this->labelCreate = Lang::get('utopigs.epigtor::lang.link.create');
-            $this->labelDelete = Lang::get('utopigs.epigtor::lang.link.delete');
-            $this->labelDeleteConfirm = Lang::get('utopigs.epigtor::lang.link.delete_confirm');
-            $this->labelSave = Lang::get('utopigs.epigtor::lang.link.save');
-            $this->labelCancel = Lang::get('utopigs.epigtor::lang.link.cancel');
-            $this->labelLinkText = Lang::get('utopigs.epigtor::lang.link.text');
-            $this->labelLinkType = Lang::get('utopigs.epigtor::lang.link.type');
-            $this->labelLinkUrl = Lang::get('utopigs.epigtor::lang.link.url');
-            $this->labelLinkReference = Lang::get('utopigs.epigtor::lang.link.reference');
-            $this->labelLinkIsNewTab = Lang::get('utopigs.epigtor::lang.link.is_new_tab');
-        }
-        $this->content = $content;
-    }
-
-    protected function decorateFileAttributes($file)
-    {
-        if (!$file) return;
-
-        $path = $thumb = $file->getPath();
-
-        if ($this->imageWidth || $this->imageHeight) {
-            $thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
-        }
-
-        $file->pathUrl = $path;
-        $file->thumbUrl = $thumb;
-
-        return $file;
-    }
-
     public function onSave()
     {
         if (!$this->checkEditor()) {
@@ -336,261 +199,6 @@ class Epigtor extends ComponentBase
     {
         $backendUser = BackendAuth::getUser();
         return $backendUser && ($backendUser->hasAccess('rainlab.translate.manage_messages'));
-    }
-
-    public function onUpload()
-    {
-        $controller = new Controller;
-        new MediaManager($controller, 'ocmediamanager');
-
-        return $controller->makeResponse(null);
-    }
-
-    public function onUploadImage()
-    {
-        if (!Input::hasFile('file_data')) {
-            throw new ApplicationException('File missing from request');
-        }
-
-        $uploadedFile = Input::file('file_data');
-
-        $modelClass = post('model_class');
-        $modelId = post('model_id');
-        $attribute = post('message');
-
-        if ($modelClass) {
-            $model = $modelClass::findOrFail($modelId);
-        } else {
-            $model = Image::firstOrCreate(['code' => $attribute]);
-            $attribute = 'image';
-        }
-
-        $fileModel = $model->makeRelation($attribute);
-        $fileRelation = $model->{$attribute}();
-        $file = $fileModel;
-        $file->data = $uploadedFile;
-        $file->is_public = $fileRelation->isPublic();
-        $file->save();
-
-        $file = $this->decorateFileAttributes($file);
-
-        $result = [
-            'id' => $file->id,
-            'thumb' => $file->thumbUrl,
-            'path' => $file->pathUrl
-        ];
-
-        $response = Response::make($result, 200);
-
-        return $response;
-    }
-
-    public function onGetUploadedImage()
-    {
-        $modelClass = post('model')['model'];
-        $modelId = post('model')['id'];
-        $attribute = post('message');
-        $imageId = post('imageId');
-        $imagePartial = post('imagePartial');
-        $save = post('save');
-
-        $file = File::findOrFail($imageId);
-        if ($save) {
-            if ($modelClass) {
-                $model = $modelClass::findOrFail($modelId);
-                $fileRelation = $model->{$attribute}();
-            } else {
-                $model = Image::firstOrCreate(['code' => $attribute]);
-                $fileRelation = $model->image();
-            }
-            $fileRelation->add($file);
-        }
-
-        if ($modelClass) {
-            $widgetId = str_slug($modelClass).'-'.$modelId.'-'.$attribute;
-        } else {
-            $widgetId = 'image-'.$attribute;
-        }
-
-        return [
-            'image' => $file,
-            '#epigtor-'.$widgetId => $this->renderPartial($imagePartial, [
-                'image' => $file
-            ])
-        ];
-    }
-
-    public function onDeleteImage()
-    {
-        $imageId = post('imageId');
-        $modelClass = post('model')['model'];
-        $modelId = post('model')['id'];
-        $attribute = post('message');
-
-        File::findOrFail($imageId)->delete();
-
-        if ($modelClass) {
-            $widgetId = str_slug($modelClass).'-'.$modelId.'-'.$attribute;
-        } else {
-            $widgetId = 'image-'.$attribute;
-        }
-
-        return [
-            '#epigtor-'.$widgetId => $this->renderPartial($this->alias.'::image-empty', [
-                'labelCreate' => Lang::get('utopigs.epigtor::lang.image.create')
-            ])
-        ];
-    }
-
-    public function onCancelUploadedImage()
-    {
-        $modelClass = post('model')['model'];
-        $modelId = post('model')['id'];
-        $attribute = post('message');
-        if ($modelClass) {
-            $model = $modelClass::findOrFail($modelId);
-            $file = $model->$attribute;
-        } else {
-            $model = Image::firstOrCreate(['code' => $attribute]);
-            $file = $model->image;
-        }
-        
-        $imageId = post('imageId');
-        $imagePartial = post('imagePartial');
-
-        if (!$file || ($file->id != $imageId)) {
-            $fileToDelete = File::findOrFail($imageId);
-            $fileToDelete->delete();
-        }
-
-        if ($modelClass) {
-            $widgetId = str_slug($modelClass).'-'.$modelId.'-'.$attribute;
-        } else {
-            $widgetId = 'image-'.$attribute;
-        }
-
-        if ($file) {
-            $file = $this->decorateFileAttributes($file);
-            return [
-                'image' => $file,
-                '#epigtor-'.$widgetId => $this->renderPartial($imagePartial, [
-                    'image' => $file
-                ])
-            ];
-        } else {
-            return [
-                '#epigtor-'.$widgetId => $this->renderPartial($this->alias.'::image-empty', [
-                    'labelCreate' => Lang::get('utopigs.epigtor::lang.image.create')
-                ])
-            ];
-        }
-    }
-
-    public function onSaveImageTitle()
-    {
-        $fileId = post('fileId');
-        $title = post('title');
-        $file = File::findOrFail($fileId);
-        $file->title = $title;
-        $file->save();
-    }
-
-    public function onSaveLink()
-    {
-        $linkId = post('linkId');
-        $linkPartial = post('linkPartial');
-        $text = post('text');
-        $type = post('type');
-        $externalUrl = post('external_url');
-        $reference = post('reference');
-        $isNewTab = post('is_new_tab');
-        $modelClass = post('model')['model'];
-        $modelId = post('model')['id'];
-        $attribute = post('message');
-        $cssClass = post('cssClass');
-
-        if ($linkId) {
-            $link = Link::findOrFail($linkId);
-        } else {
-            $link = new Link;
-            if ($modelClass) {
-                $model = $modelClass::findOrFail($modelId);
-                $link->field = $attribute;
-            } else {
-                $link->code = $attribute;
-            }
-        }
-
-        $link->text = $text;
-        $link->type = $type;
-        $link->external_url = $externalUrl;
-        $link->reference = $reference;
-        $link->is_new_tab = $isNewTab;
-        $link->save();
-
-        if (isset($model)) {
-            $model->linkables()->add($link);
-        }
-
-        if ($modelClass) {
-            $widgetId = str_slug($modelClass).'-'.$modelId.'-'.$attribute;
-        } else {
-            $widgetId = 'link-'.$attribute;
-        }
-
-        return [
-            'link' => $link,
-            '#epigtor-'.$widgetId => $this->renderPartial($linkPartial, [
-                'link' => $link,
-                'cssClass' => $cssClass
-            ])
-        ];
-    }
-
-    public function onDeleteLink()
-    {
-        $linkId = post('linkId');
-        $modelClass = post('model')['model'];
-        $modelId = post('model')['id'];
-        $attribute = post('message');
-
-        Link::findOrFail($linkId)->delete();
-
-        if ($modelClass) {
-            $widgetId = str_slug($modelClass).'-'.$modelId.'-'.$attribute;
-        } else {
-            $widgetId = 'link-'.$attribute;
-        }
-
-        return [
-            '#epigtor-'.$widgetId => $this->renderPartial($this->alias.'::link-empty', [
-                'labelCreate' => Lang::get('utopigs.epigtor::lang.link.create')
-            ])
-        ];
-    }
-
-    public function onGetTypeOptions()
-    {
-        $link = new Link;
-        $options = $link->getTypeOptions();
-        foreach ($options as $key => $value) {
-            $options[$key] = Lang::get($value);
-        }
-
-        return [
-            'options' => $options
-        ];
-    }
-
-    public function onGetReferenceOptions()
-    {
-        $link = new Link;
-        $link->type = post('type');
-        $options = $link->getReferenceOptions();
-
-        return [
-            'options' => $options
-        ];
     }
 
 }
