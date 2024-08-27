@@ -11,6 +11,13 @@ trait EpigtorLink
     public $labelLinkReference;
     public $labelLinkIsNewTab;
 
+    private function getContentLink()
+    {
+        $content = Link::where('code', $this->message)->first();
+
+        return $content;
+    }
+    
     private function renderLink($content)
     {
         $this->linkPartial = $this->property('partial');

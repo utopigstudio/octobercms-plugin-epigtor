@@ -35,6 +35,14 @@ trait EpigtorImage
     public $labelReplace;
     public $labelImageTitle;
 
+    private function getContentImage()
+    {
+        $image = Image::where('code', $this->message)->first();
+        $content = $image->image ?? null;
+
+        return $content;
+    }
+
     private function renderImage($content)
     {
         if ($content && !$content->title) {

@@ -6,6 +6,11 @@ use System\Helpers\Cache as CacheHelper;
 
 trait EpigtorPlain
 {
+    private function getContentPlain()
+    {
+        return Message::trans($this->message);
+    }
+
     private function renderPlain($content)
     {
         //convert nl2br

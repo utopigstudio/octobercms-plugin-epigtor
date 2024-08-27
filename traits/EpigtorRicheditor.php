@@ -13,6 +13,11 @@ trait EpigtorRicheditor
     public $globalToolbarButtons;
     public $paragraphFormats;
 
+    private function getContentRicheditor()
+    {
+        return Message::trans($this->message);
+    }
+
     private function renderRicheditor($content)
     {
         if (!$this->isEditor) {

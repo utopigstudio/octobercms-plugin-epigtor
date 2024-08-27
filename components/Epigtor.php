@@ -22,6 +22,7 @@ class Epigtor extends ComponentBase
     public $content;
     public $isEditor;
     public $message;
+    public $propertyModel;
     public $model_class;
     public $model_id;
     public $type;
@@ -100,18 +101,29 @@ class Epigtor extends ComponentBase
 
     public function onRender()
     {
+        $this->initData();
+
+        $content = $this->getContent();
+        
+        return $this->renderContent($content);
+    }
+
+    private function initData()
+    {
         $this->isEditor = $this->checkEditor();
         $this->message = $this->property('message');
         $this->type = $this->property('type') ?: 'plain';
         $this->toolbarButtons = $this->property('toolbarButtons');
         $this->showDelete = $this->property('showDelete', false);
+        $this->propertyModel = $this->property('model');
         $this->model_class = null;
         $this->model_id = null;
         $this->content = null;
         $this->cssClass = $this->property('cssClass');
-        $propertyModel = $this->property('model');
 
-        //reset properties for next component
+        // reset properties for next component
+        // this is needed for multiple components on the same page,
+        // otherwise if a component doesn't have a property set, it will use the last set property
         $this->setProperty('type', '');
         $this->setProperty('toolbarButtons', '');
         $this->setProperty('content', '');
@@ -119,30 +131,42 @@ class Epigtor extends ComponentBase
         $this->setProperty('model', '');
         $this->setProperty('cssClass', '');
         $this->setProperty('model', '');
+    }
 
-        $content = null;
-        
-        if ($propertyModel) {
+    private function getContent()
+    {        
+        if ($this->propertyModel) {
             /** @var stdClass $model */            
-            $model = clone $propertyModel; // why clone?
+            $model = clone $this->propertyModel; // why clone?
             $message = $this->message;
             $content = $model->$message;
             $this->model_class = get_class($model);
             $this->model_id = $model->id;
-        } else {
-            if (in_array($this->type, ['plain', 'richeditor'])) {
-                //TODO: check if message already exists in db, and if not, load default message from theme config files if it exists
-                $content = Message::trans($this->message);
-            }
-            if ($this->type == 'image') {
-                $image = Image::where('code', $this->message)->first();
-                $content = $image->image ?? null;
-            }
-            if ($this->type == 'link') {
-                $content = Link::where('code', $this->message)->first();
-            }
+
+            return $content;
         }
 
+        if ($this->type == 'plain') {
+            return $this->getContentPlain($this->message);
+        }
+
+        if ($this->type == 'richeditor') {
+            return $this->getContentRicheditor($this->message);
+        }
+
+        if ($this->type == 'image') {
+            return $this->getContentImage($this->message);
+        }
+
+        if ($this->type == 'link') {
+            return $this->getContentLink($this->message);
+        }
+
+        return null;
+    }
+
+    private function renderContent($content)
+    {
         if ($this->type == 'plain') {
             return $this->renderPlain($content);
         }
