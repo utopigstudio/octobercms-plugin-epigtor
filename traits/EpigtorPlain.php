@@ -1,5 +1,9 @@
 <?php namespace Utopigs\Epigtor\Traits;
 
+use RainLab\Translate\Classes\Translator;
+use RainLab\Translate\Models\Message;
+use System\Helpers\Cache as CacheHelper;
+
 trait EpigtorPlain
 {
     private function renderPlain($content)
@@ -24,6 +28,36 @@ trait EpigtorPlain
         }
 
         $this->content = $content;
+    }
+
+    public function onSavePlain()
+    {
+        if (!$this->checkEditor()) {
+            return;
+        }
+
+        $locale = Translator::instance()->getLocale();
+
+        $key = post('message');
+        $content = post('content');
+
+        $breaks = array("<br />","<br>","<br/>");  
+        $content = str_ireplace($breaks, "\r\n", $content);
+
+        if (post('model')) {
+            $modelClass = post('model')['model'];
+            $model = $modelClass::findOrFail(post('model')['id']);
+            $model->$key = $content;
+            $model->save();
+        } else {
+            $messages = Message::where('locale', $locale)->first();
+            $message = $messages->data[$key] ?? '';
+
+            if ($content != $message) {
+                $messages->updateMessage($locale, $key, $content);
+                CacheHelper::clear();
+            }
+        }
     }
 
 }

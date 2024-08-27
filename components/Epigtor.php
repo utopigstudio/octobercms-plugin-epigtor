@@ -1,12 +1,9 @@
 <?php namespace Utopigs\Epigtor\Components;
 
-use Backend\Classes\Controller;
+use Backend\Models\EditorSetting;
 use BackendAuth;
 use Cms\Classes\ComponentBase;
-use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Message;
-use System\Helpers\Cache as CacheHelper;
-use Backend\Models\EditorSetting;
 use Url;
 use Utopigs\Banners\Models\Image;
 use Utopigs\Epigtor\Traits\EpigtorImage;
@@ -90,7 +87,7 @@ class Epigtor extends ComponentBase
 
             $this->addCss('assets/css/epigtor.css?v=3.0.2');
             $this->addJs('assets/js/epigtor-panel.js?v=3.0.2');
-            $this->addJs('assets/js/epigtor.js?v=3.0.2');
+            $this->addJs('assets/js/epigtor-plain.js?v=3.0.2');
             $this->addJs('assets/js/epigtor-richeditor.js?v=3.0.2');
             $this->addJs('assets/js/epigtor-image.js?v=3.0.2');
             $this->addJs('assets/js/epigtor-link.js?v=3.0.2');
@@ -163,39 +160,7 @@ class Epigtor extends ComponentBase
         }
     }
 
-    public function onSave()
-    {
-        if (!$this->checkEditor()) {
-            return;
-        }
-
-        $locale = Translator::instance()->getLocale();
-
-        $key = post('message');
-        $content = post('content');
-
-        if (post('type') == 'plain') {
-            $breaks = array("<br />","<br>","<br/>");  
-            $content = str_ireplace($breaks, "\r\n", $content);
-        }
-
-        if (post('model')) {
-            $modelClass = post('model')['model'];
-            $model = $modelClass::findOrFail(post('model')['id']);
-            $model->$key = $content;
-            $model->save();
-        } else {
-            $messages = Message::where('locale', $locale)->first();
-            $message = $messages->data[$key] ?? '';
-
-            if ($content != $message) {
-                $messages->updateMessage($locale, $key, $content);
-                CacheHelper::clear();
-            }
-        }
-    }
-
-    public function checkEditor()
+    private function checkEditor()
     {
         $backendUser = BackendAuth::getUser();
         return $backendUser && ($backendUser->hasAccess('rainlab.translate.manage_messages'));

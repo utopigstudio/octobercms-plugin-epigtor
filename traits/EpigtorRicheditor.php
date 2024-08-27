@@ -2,6 +2,9 @@
 
 use Backend\Classes\Controller;
 use Media\Widgets\MediaManager;
+use RainLab\Translate\Classes\Translator;
+use RainLab\Translate\Models\Message;
+use System\Helpers\Cache as CacheHelper;
 
 trait EpigtorRicheditor
 {
@@ -29,6 +32,33 @@ trait EpigtorRicheditor
         new MediaManager($controller, 'ocmediamanager');
 
         return $controller->makeResponse(null);
+    }
+
+    public function onSaveRicheditor()
+    {
+        if (!$this->checkEditor()) {
+            return;
+        }
+
+        $locale = Translator::instance()->getLocale();
+
+        $key = post('message');
+        $content = post('content');
+
+        if (post('model')) {
+            $modelClass = post('model')['model'];
+            $model = $modelClass::findOrFail(post('model')['id']);
+            $model->$key = $content;
+            $model->save();
+        } else {
+            $messages = Message::where('locale', $locale)->first();
+            $message = $messages->data[$key] ?? '';
+
+            if ($content != $message) {
+                $messages->updateMessage($locale, $key, $content);
+                CacheHelper::clear();
+            }
+        }
     }
 
 }
