@@ -8,7 +8,6 @@ use RainLab\Translate\Models\Message;
 use System\Helpers\Cache as CacheHelper;
 use Media\Widgets\MediaManager;
 use Backend\Models\EditorSetting;
-use Utopigs\Epigtor\Models\Settings;
 use Url;
 use Input;
 use ApplicationException;
@@ -28,6 +27,7 @@ class Epigtor extends ComponentBase
     public $ace_vendor_path;
     public $type;
     public $toolbarButtons;
+    public $globalToolbarButtons;
     public $paragraphFormats;
     public $csrf_token;
     public $imagePartial;
@@ -94,21 +94,22 @@ class Epigtor extends ComponentBase
         $this->isEditor = $this->checkEditor();
 
         if ($this->isEditor) {
+
             $this->addCss('assets/vendor/redactor/redactor.css');
             $this->addJs('assets/vendor/redactor/redactor.js');
 
-            $this->addJs('assets/vendor/oc2/foundation.baseclass.js');
-            $this->addJs('assets/vendor/oc2/foundation.controlutils.js');
-            $this->addCss('assets/vendor/oc2/richeditor/assets/css/richeditor.css', 'core');
-            $this->addJs('assets/vendor/oc2/richeditor/assets/js/build-min.js', 'core');
-            $this->addJs('assets/vendor/oc2/richeditor/assets/js/build-plugins-min.js', 'core');
-            $this->addJs('assets/vendor/oc2/codeeditor/assets/js/build-min.js', 'core');
+            $this->addJs('/modules/backend/assets/foundation/scripts/foundation/foundation.baseclass.js');
+            $this->addJs('/modules/backend/assets/foundation/scripts/foundation/foundation.controlutils.js');
+
+            $this->addCss('/modules/backend/formwidgets/richeditor/assets/css/base-styles.css');
+            $this->addCss('/modules/backend/formwidgets/richeditor/assets/css/richeditor.css');
+            $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-min.js');
+            $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/richeditor.js');
+            $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js');
 
             $this->addJs('/modules/backend/assets/js/october/october.lang.js');
             $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
             $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
-
-            // $this->addJs('/modules/system/assets/ui/js/select.js');
 
             // $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
             // if ($froala_custom_defaults) {
@@ -116,6 +117,7 @@ class Epigtor extends ComponentBase
             // }
 
             $this->paragraphFormats = EditorSetting::getConfiguredFormats('html_paragraph_formats') ? json_encode(EditorSetting::getConfiguredFormats('html_paragraph_formats')) : null;
+            $this->globalToolbarButtons = str_replace(" ", "", EditorSetting::getConfigured('html_toolbar_buttons'));
 
             $this->addCss('assets/css/epigtor.css?v=3.0.2');
             $this->addJs('assets/js/epigtor-panel.js?v=3.0.2');
@@ -123,7 +125,7 @@ class Epigtor extends ComponentBase
             $this->addJs('assets/js/epigtor-image.js?v=3.0.2');
             $this->addJs('assets/js/epigtor-link.js?v=3.0.2');
 
-            $this->ace_vendor_path = Url::asset('/plugins/utopigs/epigtor/assets/vendor/oc2/codeeditor/assets/vendor/ace');
+            $this->ace_vendor_path = Url::asset('/modules/backend/formwidgets/codeeditor/assets/vendor/ace');
 
             $this->csrf_token = csrf_token();
         }

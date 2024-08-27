@@ -6,14 +6,18 @@
     data-model="{{ __SELF__.model_class }}"
     data-id="{{ __SELF__.model_id }}"
     data-upload-handler="{{ __SELF__ }}::onUpload"
-    data-csrf-token="{{ __SELF__.csrf_token }}">
-    <div class="rendered">{{ __SELF__.content|raw }}</div>
+    data-csrf-token="{{ __SELF__.csrf_token }}"
+    {% if __SELF__.toolbarButtons %}data-toolbar-buttons="{{ __SELF__.toolbarButtons }}"
+    {% elseif __SELF__.globalToolbarButtons %}data-toolbar-buttons="{{ __SELF__.globalToolbarButtons }}"
+    {% endif %}">
+    <div class="rendered">{{ __SELF__.content|content }}</div>
     <div
         class="epigtor-richeditor"
-        {% if __SELF__.toolbarButtons %}data-toolbar-buttons="{{ __SELF__.toolbarButtons }}"{% endif %}
         {% if __SELF__.paragraphFormats %}data-paragraph-format="{{ __SELF__.paragraphFormats }}"{% endif %}
+        data-editor-options="[]"
         data-ace-vendor-path="{{ __SELF__.ace_vendor_path }}"
-        data-legacy-mode="1">
+        data-legacy-mode="1"
+        data-use-media-manager="false">
         <div class="editor-write layout-cell">
             <textarea data-richeditor-textarea style="display:none">{{ __SELF__.content }}</textarea>
         </div>

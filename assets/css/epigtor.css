@@ -20015,3 +20015,8 @@
 }
 
 /*# sourceMappingURL=epigtor.css.map */
+
+.epigtor-richeditor .fr-element :first-child {
+  margin-top: 0;
+}
+:root{--oc-input-selection-bg:#b5d6fd}

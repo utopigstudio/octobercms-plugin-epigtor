@@ -30,6 +30,8 @@
         this.$save = $('<button />').addClass('epigtor-save-button').text('Save').hide().appendTo(this.$controlPanel)
         this.$cancel = $('<button />').addClass('epigtor-cancel-button').text('Cancel').hide().appendTo(this.$controlPanel)
 
+        this.toolbarButtons = this.$el.data('toolbar-buttons');
+
         $(document.body).append(this.$controlPanel)
 
         this.$el.on('mousemove', function(){
@@ -97,7 +99,9 @@
         if (this.editorType == 'richeditor') {
             this.originalHtml = this.$el.find('>.rendered').html();
 
-            this.richEditor = this.$el.find('>.epigtor-richeditor:first').richEditor();
+            this.richEditor = this.$el.find('>.epigtor-richeditor:first').richEditor({
+                toolbarButtons: this.toolbarButtons,
+            });
 
             var richEditorOpts = this.richEditor.data('oc.richEditor').editor.opts;
 
