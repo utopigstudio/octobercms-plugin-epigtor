@@ -131,6 +131,8 @@
         this.$save.show();
         this.$cancel.show();
         this.$edit.hide();
+
+        hideControlPanels();
     }
 
     Epigtor.prototype.hideControlPanel = function() {
@@ -189,13 +191,6 @@
         if (epigtorIsEditing) {
             $(this).epigtor();
         }
-    });
-
-    $(window).scroll(function() {
-        $(document).find('[data-control="epigtor"]').each(function(){
-            if ($(this).data('oc.epigtor') != undefined)
-                $(this).data('oc.epigtor').hideControlPanel()
-        })
     });
 
     $(document).on('click','.redactor-editor',function(e){

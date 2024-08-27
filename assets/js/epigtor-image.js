@@ -75,7 +75,10 @@
 
         this.showControlPanel()
 
-        this.$edit.on('click', function(){ that.showImageWidget() })
+        this.$edit.on('click', function(){
+            that.showImageWidget();
+            hideControlPanels();
+        })
 
         this.labelDeleteConfirm = this.$el.data('label-delete-confirm');
 
@@ -324,13 +327,6 @@
         if (epigtorIsEditing) {
             $(this).epigtorImage();
         }
-    });
-
-    $(window).scroll(function() {
-        $(document).find('[data-control="epigtor-image"]').each(function(){
-            if ($(this).data('oc.epigtorImage') != undefined)
-                $(this).data('oc.epigtorImage').hideControlPanel()
-        })
     });
 
     $(document.body).append($(uploadTemplateHtml()));

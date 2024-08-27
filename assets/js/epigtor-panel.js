@@ -63,6 +63,10 @@ var epigtorIsEditing = false;
         $('.epigtor-link-empty').hide();
     });
 
+    $(window).scroll(function() {
+        hideControlPanels();
+    });
+
 }(window.jQuery);
 
 function epigtorDragElement(elmnt) {
@@ -102,4 +106,21 @@ function epigtorDragElement(elmnt) {
         document.onmouseup = null;
         document.onmousemove = null;
     }
+}
+
+function hideControlPanels() {
+    $(document).find('[data-control="epigtor"]').each(function(){
+        if ($(this).data('oc.epigtor') != undefined) {
+            $(this).data('oc.epigtor').hideControlPanel()
+        }
+    });
+    $(document).find('[data-control="epigtor-image"]').each(function(){
+        if ($(this).data('oc.epigtorImage') != undefined) {
+            $(this).data('oc.epigtorImage').hideControlPanel()
+        }
+    });
+    $(document).find('[data-control="epigtor-link"]').each(function(){
+        if ($(this).data('oc.epigtorLink') != undefined)
+            $(this).data('oc.epigtorLink').hideControlPanel()
+    });
 }

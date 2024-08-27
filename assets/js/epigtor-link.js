@@ -74,7 +74,10 @@
 
         this.showControlPanel()
 
-        this.$edit.on('click', function(){ that.showLinkWidget() })
+        this.$edit.on('click', function(){
+            that.showLinkWidget();
+            hideControlPanels();
+        })
 
         this.getTypeOptions();
 
@@ -323,13 +326,6 @@
         if (epigtorIsEditing) {
             $(this).epigtorLink();
         }
-    });
-
-    $(window).scroll(function() {
-        $(document).find('[data-control="epigtor-link"]').each(function(){
-            if ($(this).data('oc.epigtorLink') != undefined)
-                $(this).data('oc.epigtorLink').hideControlPanel()
-        })
     });
 
 }(window.jQuery);

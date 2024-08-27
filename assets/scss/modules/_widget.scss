@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'octo-icon';
-  src:  url('../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.eot?symvb&v=@{icon-font-version');
-  src:  url('../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.eot?symvb#iefix&v=@{icon-font-version') format('embedded-opentype'),
-    url('../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.ttf?symvb&v=@{icon-font-version') format('truetype'),
-    url('../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.woff?symvb&v=@{icon-font-version') format('woff'),
-    url('../../../../../../modules/backend/assets/foundation/elements/octoicons/octo-icon.svg?symvb#octo-icon&v=@{icon-font-version}') format('svg');
+  font-family: 'octo-icon'; 
+  src:  url('font/octo-icon.eot?symvb&v=1');
+  src:  url('font/octo-icon.eot?symvb#iefix&v=1') format('embedded-opentype'),
+    url('font/octo-icon.ttf?symvb&v=1') format('truetype'),
+    url('font/octo-icon.woff?symvb&v=1') format('woff'),
+    url('font/octo-icon.svg?symvb#octo-icon&v=1') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
