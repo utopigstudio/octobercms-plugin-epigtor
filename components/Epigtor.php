@@ -61,15 +61,13 @@ class Epigtor extends ComponentBase
         $this->isEditor = $this->checkEditor();
 
         if ($this->isEditor) {
-
+            // plain editor assets
             $this->addCss('assets/vendor/redactor/redactor.css');
             $this->addJs('assets/vendor/redactor/redactor.js');
 
+            // richeditor assets
             $this->addJs('/modules/backend/assets/foundation/scripts/foundation/foundation.baseclass.js');
             $this->addJs('/modules/backend/assets/foundation/scripts/foundation/foundation.controlutils.js');
-
-            $this->addCss('/modules/backend/formwidgets/richeditor/assets/css/base-styles.css');
-            $this->addCss('/modules/backend/formwidgets/richeditor/assets/css/richeditor.css');
             $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-min.js');
             $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/richeditor.js');
             $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js');
@@ -84,7 +82,17 @@ class Epigtor extends ComponentBase
             // }
 
             $this->paragraphFormats = EditorSetting::getConfiguredFormats('html_paragraph_formats') ? json_encode(EditorSetting::getConfiguredFormats('html_paragraph_formats')) : null;
-            $this->globalToolbarButtons = str_replace(" ", "", EditorSetting::getConfigured('html_toolbar_buttons'));
+            $globalToolbarButtons = str_replace(" ", "", EditorSetting::getConfigured('html_toolbar_buttons'));
+            // if one of the buttons is insertPageLink, we change it to insertLink because epigtor doesn't support insertPageLink
+            if (strpos($globalToolbarButtons, 'insertPageLink') !== false) {
+                if (strpos($globalToolbarButtons, 'insertLink') === false) {
+                    $globalToolbarButtons = str_replace('insertPageLink', 'insertLink', $globalToolbarButtons);
+                } else {
+                    $globalToolbarButtons = str_replace('insertPageLink', '', $globalToolbarButtons);
+                    $globalToolbarButtons = str_replace(',,', ',', $globalToolbarButtons);
+                }
+            }
+            $this->globalToolbarButtons = $globalToolbarButtons;
 
             $this->addCss('assets/css/epigtor.css?v=3.0.2');
             $this->addJs('assets/js/epigtor-panel.js?v=3.0.2');

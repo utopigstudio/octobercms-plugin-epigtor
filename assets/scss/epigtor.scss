@@ -1,5 +1,7 @@
-@import "./modules/october-storm.scss";
-@import "./modules/froala.scss";
+@import "./modules/october-imported.scss";
 @import "./modules/widget.scss";
-@import "./modules/fileupload.scss";
-@import "./modules/october.scss";
+@import "./modules/richeditor.scss";
+
+@import "../../../../../modules/backend/formwidgets/richeditor/assets/css/base-styles";
+@import "../../../../../modules/backend/formwidgets/richeditor/assets/css/richeditor";
+
