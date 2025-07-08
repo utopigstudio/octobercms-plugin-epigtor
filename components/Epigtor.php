@@ -3,14 +3,12 @@
 use Backend\Models\EditorSetting;
 use BackendAuth;
 use Cms\Classes\ComponentBase;
-use RainLab\Translate\Models\Message;
 use Url;
-use Utopigs\Banners\Models\Image;
+use Utopigs\Epigtor\Models\Settings;
 use Utopigs\Epigtor\Traits\EpigtorImage;
 use Utopigs\Epigtor\Traits\EpigtorLink;
 use Utopigs\Epigtor\Traits\EpigtorPlain;
 use Utopigs\Epigtor\Traits\EpigtorRicheditor;
-use Utopigs\Linkable\Models\Link;
 
 class Epigtor extends ComponentBase
 {
@@ -76,10 +74,10 @@ class Epigtor extends ComponentBase
             $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
             $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
 
-            // $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
-            // if ($froala_custom_defaults) {
-            //     $this->addJs('/storage/app/media/utopigs_epigtor/'.$froala_custom_defaults);
-            // }
+            $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
+            if ($froala_custom_defaults) {
+                $this->addJs('/storage/app/media/utopigs_epigtor/'.$froala_custom_defaults);
+            }
 
             $this->paragraphFormats = EditorSetting::getConfiguredFormats('html_paragraph_formats') ? json_encode(EditorSetting::getConfiguredFormats('html_paragraph_formats')) : null;
             $globalToolbarButtons = str_replace(" ", "", EditorSetting::getConfigured('html_toolbar_buttons'));

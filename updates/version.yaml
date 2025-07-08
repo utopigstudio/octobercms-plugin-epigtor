@@ -14,3 +14,4 @@ v3.0.6: Hide edit buttons when editing an element, fix bug with fonts
 v3.0.7: prevent space activating button when editing a text inside a button
 v3.0.8: force pastePlain in richeditor
 v3.1.0: Use the OctoberCMS 3.1 richeditor (in legacy mode), fix bugs with videos
+v3.1.1: Disable advanced list types by default
