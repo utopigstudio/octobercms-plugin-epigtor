@@ -36,6 +36,9 @@ trait EpigtorImage
 
     private function getContentImage()
     {
+        /**
+         * @disregard P1009 Undefined type
+         */
         $image = \Utopigs\Banners\Models\Image::where('code', $this->message)->first();
         $content = $image->image ?? null;
 
@@ -102,6 +105,9 @@ trait EpigtorImage
         if ($modelClass) {
             $model = $modelClass::findOrFail($modelId);
         } else {
+            /**
+             * @disregard P1009 Undefined type
+             */
             $model = \Utopigs\Banners\Models\Image::firstOrCreate(['code' => $attribute]);
             $attribute = 'image';
         }
@@ -141,6 +147,9 @@ trait EpigtorImage
                 $model = $modelClass::findOrFail($modelId);
                 $fileRelation = $model->{$attribute}();
             } else {
+                /**
+                 * @disregard P1009 Undefined type
+                 */
                 $model = \Utopigs\Banners\Models\Image::firstOrCreate(['code' => $attribute]);
                 $fileRelation = $model->image();
             }
@@ -192,6 +201,9 @@ trait EpigtorImage
             $model = $modelClass::findOrFail($modelId);
             $file = $model->$attribute;
         } else {
+            /**
+             * @disregard P1009 Undefined type
+             */
             $model = \Utopigs\Banners\Models\Image::firstOrCreate(['code' => $attribute]);
             $file = $model->image;
         }

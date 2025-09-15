@@ -16,6 +16,9 @@ trait EpigtorLink
 
     private function getContentLink()
     {
+        /**
+         * @disregard P1009 Undefined type
+         */
         $content = \Utopigs\Linkable\Models\Link::where('code', $this->message)->first();
 
         return $content;
@@ -62,8 +65,14 @@ trait EpigtorLink
 
         if ($isOldLink) {
             if ($linkId) {
+                /**
+                 * @disregard P1009 Undefined type
+                 */
                 $link = \Utopigs\Linkable\Models\Link::findOrFail($linkId);
             } else {
+                /**
+                 * @disregard P1009 Undefined type
+                 */
                 $link = new \Utopigs\Linkable\Models\Link;
                 if ($modelClass) {
                     $model = $modelClass::findOrFail($modelId);
@@ -124,6 +133,9 @@ trait EpigtorLink
         $modelId = post('model')['id'];
         $attribute = post('message');
 
+        /**
+         * @disregard P1009 Undefined type
+         */
         \Utopigs\Linkable\Models\Link::findOrFail($linkId)->delete();
 
         if ($modelClass) {
