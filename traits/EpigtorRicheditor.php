@@ -26,6 +26,9 @@ trait EpigtorRicheditor
 
         if (!$content) {
             $content = "[empty]";
+        } else {
+            $html = $content;
+            $content = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $html);
         }
 
         $this->content = $content;

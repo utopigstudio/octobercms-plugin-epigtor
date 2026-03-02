@@ -2,6 +2,7 @@
 
 use System\Classes\PluginBase;
 use Utopigs\Epigtor\Models\Settings;
+use Event;
 
 class Plugin extends PluginBase
 {
@@ -57,6 +58,11 @@ class Plugin extends PluginBase
                 $controller->addJs('/storage/app/media/utopigs_epigtor/'.$froala_custom_defaults);
             });
         }
+
+        Event::listen('cms.content.postProcessMarkup', function(&$markup) {
+            if (empty($markup)) return $markup;
+            $markup = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $markup);
+        });
     }
 
 }
