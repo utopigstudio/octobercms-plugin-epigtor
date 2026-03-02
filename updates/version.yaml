@@ -17,3 +17,4 @@ v3.1.0: Use the OctoberCMS 3.1 richeditor (in legacy mode), fix bugs with videos
 v3.1.1: Disable advanced list types by default
 v3.1.2: Compatibility with new links (without Linkable plugin) and Banners plugin is optional now
 v3.1.3: Fix translation key
+v3.1.4: Force alt on wysiwyg images
