@@ -1,0 +1,33 @@
+body.epigtor-richeditor-backend #layout-mainmenu,
+body.epigtor-richeditor-backend #layout-mainmenu-left,
+body.epigtor-richeditor-backend #layout-sidenav,
+body.epigtor-richeditor-backend #layout-sidenav-responsive,
+body.epigtor-richeditor-backend .mainmenu-responsive {
+    display: none !important;
+}
+
+body.epigtor-richeditor-backend #layout-body {
+    width: 100%;
+}
+
+body.epigtor-richeditor-backend .layout-container {
+    padding: 0 !important;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form {
+    height: 100%;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .padded-container {
+    padding: 20px 20px 0;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    margin: 0;
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--bs-border-color);
+    background: var(--bs-body-bg);
+}

@@ -1,17 +1,16 @@
 <?php namespace Utopigs\Epigtor\Traits;
 
-use Backend\Classes\Controller;
-use Media\Widgets\MediaManager;
+use Backend;
+use Illuminate\Support\Facades\Crypt;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Message;
 use System\Helpers\Cache as CacheHelper;
 
 trait EpigtorRicheditor
 {
-    public $ace_vendor_path;
+    public $instanceId;
+    public $richeditorPopupUrl;
     public $toolbarButtons;
-    public $globalToolbarButtons;
-    public $paragraphFormats;
 
     private function getContentRicheditor()
     {
@@ -32,14 +31,8 @@ trait EpigtorRicheditor
         }
 
         $this->content = $content;
-    }
-
-    public function onUpload()
-    {
-        $controller = new Controller;
-        new MediaManager($controller, 'ocmediamanager');
-
-        return $controller->makeResponse(null);
+        $this->instanceId = $this->makeRicheditorInstanceId();
+        $this->richeditorPopupUrl = $this->makeRicheditorPopupUrl();
     }
 
     public function onSaveRicheditor()
@@ -67,6 +60,30 @@ trait EpigtorRicheditor
                 CacheHelper::clear();
             }
         }
+    }
+
+    protected function makeRicheditorPopupUrl(): string
+    {
+        $payload = [
+            'instance_id' => $this->instanceId,
+            'message' => $this->message,
+            'model_class' => $this->model_class,
+            'model_id' => $this->model_id,
+            'toolbar_buttons' => $this->toolbarButtons,
+        ];
+
+        return Backend::url('utopigs/epigtor/richeditor') . '?payload=' . urlencode(Crypt::encryptString(json_encode($payload)));
+    }
+
+    protected function makeRicheditorInstanceId(): string
+    {
+        return md5(implode('|', [
+            $this->alias,
+            $this->message,
+            $this->model_class,
+            $this->model_id,
+            uniqid('', true),
+        ]));
     }
 
 }

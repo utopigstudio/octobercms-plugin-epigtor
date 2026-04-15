@@ -1,0 +1,19 @@
+<?= Form::open([
+    'data-request' => 'onSave',
+    'data-request-success' => 'window.EpigtorRicheditorWindow.onSaved(data)',
+    'class' => 'layout epigtor-richeditor-form',
+]) ?>
+    <input type="hidden" name="payload" value="<?= e($payload) ?>">
+
+    <div class="layout-row">
+        <div class="padded-container">
+            <?= $formWidget->render() ?>
+        </div>
+    </div>
+
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary oc-icon-save">
+            Save
+        </button>
+    </div>
+<?= Form::close() ?>

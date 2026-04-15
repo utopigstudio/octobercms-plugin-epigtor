@@ -1,12 +1,9 @@
 <?php namespace Utopigs\Epigtor\Components;
 
-use Backend\Models\EditorSetting;
 use BackendAuth;
 use Cms\Classes\ComponentBase;
 use Cms\Classes\PageManager;
 use Cms\Models\PageLookupItem;
-use Url;
-use Utopigs\Epigtor\Models\Settings;
 use Utopigs\Epigtor\Traits\EpigtorImage;
 use Utopigs\Epigtor\Traits\EpigtorLink;
 use Utopigs\Epigtor\Traits\EpigtorPlain;
@@ -26,7 +23,6 @@ class Epigtor extends ComponentBase
     public $model_class;
     public $model_id;
     public $type;
-    public $csrf_token;
     public $refreshCode;
     public $uploadId;
     public $labelCreate;
@@ -67,45 +63,12 @@ class Epigtor extends ComponentBase
             $this->addCss('assets/vendor/redactor/redactor.css');
             $this->addJs('assets/vendor/redactor/redactor.js');
 
-            // richeditor assets
-            $this->addJs('/modules/backend/assets/foundation/scripts/foundation/foundation.baseclass.js');
-            $this->addJs('/modules/backend/assets/foundation/scripts/foundation/foundation.controlutils.js');
-            $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/build-min.js');
-            $this->addJs('/modules/backend/formwidgets/richeditor/assets/js/richeditor.js');
-            $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js');
-
-            $this->addJs('/modules/backend/assets/js/october/october.lang.js');
-            $this->addJs('/modules/backend/assets/vendor/dropzone/dropzone.js');
-            $this->addJs('/modules/backend/formwidgets/fileupload/assets/js/fileupload.js', 'core');
-
-            $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
-            if ($froala_custom_defaults) {
-                $this->addJs('/storage/app/media/utopigs_epigtor/'.$froala_custom_defaults);
-            }
-
-            $this->paragraphFormats = EditorSetting::getConfiguredFormats('html_paragraph_formats') ? json_encode(EditorSetting::getConfiguredFormats('html_paragraph_formats')) : null;
-            $globalToolbarButtons = str_replace(" ", "", EditorSetting::getConfigured('html_toolbar_buttons'));
-            // if one of the buttons is insertPageLink, we change it to insertLink because epigtor doesn't support insertPageLink
-            if (strpos($globalToolbarButtons, 'insertPageLink') !== false) {
-                if (strpos($globalToolbarButtons, 'insertLink') === false) {
-                    $globalToolbarButtons = str_replace('insertPageLink', 'insertLink', $globalToolbarButtons);
-                } else {
-                    $globalToolbarButtons = str_replace('insertPageLink', '', $globalToolbarButtons);
-                    $globalToolbarButtons = str_replace(',,', ',', $globalToolbarButtons);
-                }
-            }
-            $this->globalToolbarButtons = $globalToolbarButtons;
-
             $this->addCss('assets/css/epigtor.css?v=3.1.5');
             $this->addJs('assets/js/epigtor-panel.js?v=3.1.5');
             $this->addJs('assets/js/epigtor-plain.js?v=3.1.5');
             $this->addJs('assets/js/epigtor-richeditor.js?v=3.1.5');
             $this->addJs('assets/js/epigtor-image.js?v=3.1.5');
             $this->addJs('assets/js/epigtor-link.js?v=3.1.5');
-
-            $this->ace_vendor_path = Url::asset('/modules/backend/formwidgets/codeeditor/assets/vendor/ace');
-
-            $this->csrf_token = csrf_token();
         }
     }
 
