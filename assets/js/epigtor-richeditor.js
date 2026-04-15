@@ -41,7 +41,7 @@
             return;
         }
 
-        window.open(this.popupUrl, '_blank', 'width=1200,height=900,resizable=yes,scrollbars=yes');
+        window.open(this.popupUrl, '_blank', 'width=800,height=600,resizable=yes,scrollbars=yes');
     }
 
     EpigtorRicheditor.prototype.clickCancel = function() {

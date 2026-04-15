@@ -23,11 +23,54 @@ body.epigtor-richeditor-backend .epigtor-richeditor-form .padded-container {
 }
 
 body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 99999;
     margin: 0;
-    padding: 12px 20px 16px;
-    border-top: 1px solid var(--bs-border-color);
-    background: var(--bs-body-bg);
+    padding: 0;
+    width: 54px;
+    height: 26px;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-action-button {
+    pointer-events: auto;
+    border: none;
+    width: 26px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-size: auto 30px;
+    text-indent: -9999px;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: 1px;
+    position: absolute;
+    top: 0;
+    left: auto;
+    right: auto;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-save-button,
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-cancel-button {
+    height: 26px !important;
+    margin: 4px 2px;
+    background-repeat: no-repeat;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-save-button {
+    background-image: url("../../../assets/images/save-icon.png");
+    right: 0;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-cancel-button {
+    background-image: url("../../../assets/images/cancel-icon.png");
+    right: 28px;
+}
+
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-save-button:hover,
+body.epigtor-richeditor-backend .epigtor-richeditor-form .form-buttons .epigtor-cancel-button:hover {
+    background-position: 100% 0;
 }
