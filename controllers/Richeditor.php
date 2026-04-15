@@ -27,18 +27,19 @@ class Richeditor extends Controller
     public function index()
     {
         $this->payload = $this->decodePayload(get('payload'));
+        $this->applyPayloadLocale($this->payload);
 
         $this->vars['payload'] = get('payload');
         $this->vars['instanceId'] = $this->payload['instance_id'];
-
         $this->vars['formWidget'] = $this->makeEditorWidget();
     }
 
     public function onSave()
     {
         $payload = $this->decodePayload(post('payload'));
-        $content = (string) data_get(post('EpigtorRicheditor'), 'content', '');
+        $this->applyPayloadLocale($payload);
 
+        $content = (string) data_get(post('EpigtorRicheditor'), 'content', '');
         $this->saveContent($payload, $content);
 
         // Keep output consistent with frontend rendering behavior.
@@ -99,6 +100,10 @@ class Richeditor extends Controller
             abort(404);
         }
 
+        if (!array_key_exists('locale', $decoded)) {
+            $decoded['locale'] = null;
+        }
+
         return $decoded;
     }
 
@@ -121,7 +126,9 @@ class Richeditor extends Controller
             return (string) data_get($model, $message, '');
         }
 
-        return (string) Message::trans($message);
+        $locale = $this->resolvePayloadLocale($payload);
+
+        return (string) Message::trans($message, [], $locale);
     }
 
     protected function saveContent(array $payload, string $content): void
@@ -142,7 +149,7 @@ class Richeditor extends Controller
             return;
         }
 
-        $locale = Translator::instance()->getLocale();
+        $locale = $this->resolvePayloadLocale($payload);
         $messages = Message::where('locale', $locale)->first() ?: new Message();
         $storedContent = $messages?->data[$message] ?? '';
 
@@ -150,5 +157,22 @@ class Richeditor extends Controller
             $messages->updateMessage($locale, $message, $content);
             CacheHelper::clear();
         }
+    }
+
+    protected function applyPayloadLocale(array $payload): void
+    {
+        $locale = $this->resolvePayloadLocale($payload);
+        Translator::instance()->setLocale($locale, false);
+    }
+
+    protected function resolvePayloadLocale(array $payload): string
+    {
+        $payloadLocale = (string) ($payload['locale'] ?? '');
+
+        if ($payloadLocale !== '' && Translator::instance()->setLocale($payloadLocale, false)) {
+            return $payloadLocale;
+        }
+
+        return Translator::instance()->getLocale();
     }
 }

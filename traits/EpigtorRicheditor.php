@@ -70,6 +70,7 @@ trait EpigtorRicheditor
             'model_class' => $this->model_class,
             'model_id' => $this->model_id,
             'toolbar_buttons' => $this->toolbarButtons,
+            'locale' => Translator::instance()->getLocale(),
         ];
 
         return Backend::url('utopigs/epigtor/richeditor') . '?payload=' . urlencode(Crypt::encryptString(json_encode($payload)));
