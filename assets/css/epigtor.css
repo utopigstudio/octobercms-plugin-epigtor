@@ -2476,6 +2476,15 @@
   background-position: 100% 0;
 }
 
+/* Empty content placeholder - only shown after Edit has been activated. */
+[data-control="epigtor"][data-content-is-empty="true"][data-show-empty="true"]::before,
+[data-control="epigtor-richeditor"][data-content-is-empty="true"][data-show-empty="true"] .rendered::before {
+  content: "[empty]";
+  color: #666;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
 .clearfix:after {
   clear: both;
   content: "";
@@ -5887,3 +5896,8 @@ span.fr-img-caption.fr-view.fr-dii.fr-fir {
 }
 
 /*# sourceMappingURL=epigtor.css.map */
+
+/* Make span elements work with ::before pseudo-element when placeholder is visible. */
+[data-control="epigtor"][data-content-is-empty="true"][data-show-empty="true"] {
+  display: inline-block;
+}

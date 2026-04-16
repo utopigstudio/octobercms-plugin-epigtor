@@ -4,6 +4,8 @@
     data-handler="{{ __SELF__ }}::onSavePlain"
     data-message="{{ __SELF__.message }}"
     data-model="{{ __SELF__.model_class }}"
-    data-id="{{ __SELF__.model_id }}">
+    data-id="{{ __SELF__.model_id }}"
+    data-content-is-empty="{{ __SELF__.contentIsEmpty ? 'true' : 'false' }}"
+    data-show-empty="false">
     {{ __SELF__.content|raw }}
 </span>

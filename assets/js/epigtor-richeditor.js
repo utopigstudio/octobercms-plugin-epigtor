@@ -132,6 +132,9 @@
 
             $target.find('>.rendered').html(content);
             $target.find('>.unrendered').html(content);
+
+            $target.attr('data-content-is-empty', content && content.trim() !== '' ? 'false' : 'true');
+            $target.attr('data-show-empty', epigtorIsEditing && $target.attr('data-content-is-empty') === 'true' ? 'true' : 'false');
         });
     }
 

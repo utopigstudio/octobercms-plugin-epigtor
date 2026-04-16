@@ -46,9 +46,13 @@
     }
 
     Epigtor.prototype.clickCancel = function() {
+        this.$el.off('.epigtorEmptyPlaceholder')
         this.$el.redactor('code.set', this.originalHtml)
         this.$el.redactor('core.destroy')
         this.$el.html(this.originalHtml);
+        this.$el.attr('data-content-is-empty', this.originalHtml && this.originalHtml.trim() !== '' ? 'false' : 'true');
+        this.$el.attr('data-show-empty', epigtorIsEditing && this.$el.attr('data-content-is-empty') === 'true' ? 'true' : 'false');
+        
         this.refreshControlPanel()
         this.$controlPanel.removeClass('active')
         this.$edit.show()
@@ -58,12 +62,23 @@
 
     Epigtor.prototype.clickSave = function() {
         var html = this.$el.redactor('code.get')
+        var self = this;
+        this.$el.off('.epigtorEmptyPlaceholder')
         this.$el.redactor('core.destroy')
         this.refreshControlPanel()
         this.$controlPanel.removeClass('active')
         this.$edit.show()
         this.$save.hide()
         this.$cancel.hide()
+        
+        // Persist the actual empty state, but hide the placeholder outside edit mode.
+        if (!html || html.trim() === '') {
+            self.$el.attr('data-content-is-empty', 'true');
+        } else {
+            self.$el.attr('data-content-is-empty', 'false');
+        }
+        self.$el.attr('data-show-empty', epigtorIsEditing && self.$el.attr('data-content-is-empty') === 'true' ? 'true' : 'false');
+        
         $.request(this.requestHandler, {
             data: {
                 message: this.editMessage,
@@ -75,6 +90,7 @@
     }
 
     Epigtor.prototype.clickEdit = function() {
+        var self = this;
         this.originalHtml = this.$el.html();
 
         this.$el.redactor({
@@ -82,6 +98,20 @@
             toolbar: false,
             paragraphize: false,
             linebreaks: true
+        });
+
+        // Hide the [empty] placeholder as soon as the user starts typing real content.
+        this.$el.off('.epigtorEmptyPlaceholder')
+        this.$el.on('input.epigtorEmptyPlaceholder keyup.epigtorEmptyPlaceholder paste.epigtorEmptyPlaceholder', function() {
+            var currentText = $(this).text().replace(/\u00a0/g, ' ').trim();
+            if (currentText.length > 0) {
+                self.$el.attr('data-show-empty', 'false');
+                return;
+            }
+
+            if (epigtorIsEditing && self.$el.attr('data-content-is-empty') === 'true') {
+                self.$el.attr('data-show-empty', 'true');
+            }
         });
 
         this.refreshControlPanel();

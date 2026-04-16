@@ -27,12 +27,12 @@ trait EpigtorPlain
         if (!$this->isEditor) {
             return $content;
         }
-
-        if (!$content) {
-            $content = "[empty]";
-        }
+        // Track if content is empty for template rendering
+        $this->contentIsEmpty = !$content;
+        // Don't render [empty] placeholder - let templates/frontend handle empty state
 
         $this->content = $content;
+        return null; // Component template handles rendering via twig partial
     }
 
     public function onSavePlain()

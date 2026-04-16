@@ -17,6 +17,7 @@ var epigtorIsEditing = false;
         epigtorIsEditing = true;
         $editButton.hide();
         $cancelButton.show();
+        syncEpigtorEmptyPlaceholders();
         $('.epigtor-image-empty').show();
         $('.epigtor-link-empty').show();
     });
@@ -25,6 +26,7 @@ var epigtorIsEditing = false;
         epigtorIsEditing = false;
         $editButton.show();
         $cancelButton.hide();
+        syncEpigtorEmptyPlaceholders();
 
         $(document).find('[data-control="epigtor"]').each(function(){
             let $epigtor = $(this).data('oc.epigtor');
@@ -137,5 +139,13 @@ function hideControlPanels() {
     $(document).find('[data-control="epigtor-link"]').each(function(){
         if ($(this).data('oc.epigtorLink') != undefined)
             $(this).data('oc.epigtorLink').hideControlPanel()
+    });
+}
+
+function syncEpigtorEmptyPlaceholders() {
+    $(document).find('[data-control="epigtor"], [data-control="epigtor-richeditor"]').each(function(){
+        var $field = $(this);
+        var isEmpty = $field.attr('data-content-is-empty') === 'true';
+        $field.attr('data-show-empty', epigtorIsEditing && isEmpty ? 'true' : 'false');
     });
 }

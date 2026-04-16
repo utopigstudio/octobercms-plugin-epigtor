@@ -23,16 +23,18 @@ trait EpigtorRicheditor
             return $content;
         }
 
-        if (!$content) {
-            $content = "[empty]";
-        } else {
+        $contentIsEmpty = !$content;
+        if ($content) {
             $html = $content;
             $content = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $html);
         }
+        // Don't render [empty] placeholder - let templates/frontend handle empty state
 
         $this->content = $content;
+        $this->contentIsEmpty = $contentIsEmpty;
         $this->instanceId = $this->makeRicheditorInstanceId();
         $this->richeditorPopupUrl = $this->makeRicheditorPopupUrl();
+        return null; // Component template handles rendering via twig partial
     }
 
     public function onSaveRicheditor()

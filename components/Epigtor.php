@@ -18,6 +18,7 @@ class Epigtor extends ComponentBase
 
     public $content;
     public $isEditor;
+    public $contentIsEmpty;
     public $message;
     public $propertyModel;
     public $model_class;
@@ -78,7 +79,12 @@ class Epigtor extends ComponentBase
 
         $content = $this->getContent();
         
-        return $this->renderContent($content);
+        $rendered = $this->renderContent($content);
+        // For non-editors, return the rendered content directly
+        // For editors, renderContent returns null and the default template is used
+        if ($rendered !== null) {
+            return $rendered;
+        }
     }
 
     private function initData()
@@ -92,6 +98,7 @@ class Epigtor extends ComponentBase
         $this->model_class = null;
         $this->model_id = null;
         $this->content = null;
+        $this->contentIsEmpty = false;
         $this->cssClass = $this->property('cssClass');
 
         $this->isOldLink = false;
