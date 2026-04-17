@@ -64,12 +64,12 @@ class Epigtor extends ComponentBase
             $this->addCss('assets/vendor/redactor/redactor.css');
             $this->addJs('assets/vendor/redactor/redactor.js');
 
-            $this->addCss('assets/css/epigtor.css?v=3.1.5');
-            $this->addJs('assets/js/epigtor-panel.js?v=3.1.5');
-            $this->addJs('assets/js/epigtor-plain.js?v=3.1.5');
-            $this->addJs('assets/js/epigtor-richeditor.js?v=3.1.5');
-            $this->addJs('assets/js/epigtor-image.js?v=3.1.5');
-            $this->addJs('assets/js/epigtor-link.js?v=3.1.5');
+            $this->addCss('assets/css/epigtor.css?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-panel.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-plain.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-richeditor.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-image.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-link.js?v=test-richeditor-popup');
         }
     }
 
