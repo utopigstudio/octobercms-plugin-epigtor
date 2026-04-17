@@ -18,7 +18,6 @@
         this.refreshCode = this.$el.data('refresh-code');
         this.editMessage = this.$el.data('message');
         this.editModel = {'model': this.$el.data('model-class'), 'id': this.$el.data('model-id')}
-        this.imageId = this.$el.data('image-id');
         this.instanceId = this.$el.data('instance-id');
         this.popupUrl = this.$el.data('popup-url');
 
@@ -74,7 +73,7 @@
         window.open(this.popupUrl, '_blank', 'width=900,height=760,resizable=yes,scrollbars=yes');
     }
 
-    EpigtorImage.prototype.refreshImage = function(imageId) {
+    EpigtorImage.prototype.refreshImage = function() {
         var self = this;
 
         $.request(this.requestHandlerRefresh, {
@@ -84,7 +83,6 @@
                 imagePartial: this.imagePartial
             },
             complete: function() {
-                self.imageId = imageId || '';
                 if (self.refreshCode) {
                     eval(self.refreshCode);
                 }
@@ -160,7 +158,7 @@
             }
 
             if (plugin) {
-                plugin.refreshImage(event.data.imageId || null);
+                plugin.refreshImage();
             }
         });
     }

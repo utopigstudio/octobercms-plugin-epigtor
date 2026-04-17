@@ -120,14 +120,13 @@ class Epigtor extends ComponentBase
         $this->setProperty('showDelete', false);
         $this->setProperty('model', '');
         $this->setProperty('cssClass', '');
-        $this->setProperty('model', '');
     }
 
     private function getContent()
     {        
         if ($this->propertyModel) {
-            /** @var stdClass $model */            
-            $model = clone $this->propertyModel; // why clone?
+            /** @var stdClass $model */
+            $model = clone $this->propertyModel;
             $message = $this->message;
             $content = $model->$message;
             if ($this->type == 'link' && is_string($content)) {

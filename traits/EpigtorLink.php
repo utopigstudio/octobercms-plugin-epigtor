@@ -9,6 +9,8 @@ use Utopigs\Epigtor\Models\Settings;
 
 trait EpigtorLink
 {
+    public $linkPartial;
+    public $linkEmptyPartial;
     public $labelLinkText;
     public $labelLinkType;
     public $labelLinkUrl;

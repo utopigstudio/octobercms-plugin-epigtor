@@ -18,7 +18,6 @@
         this.requestHandlerTypeOptions = this.$el.data('handler-type-options');
         this.requestHandlerReferenceOptions = this.$el.data('handler-reference-options');
         this.linkPartial = this.$el.data('link-partial');
-        this.csrfToken = this.$el.data('csrf-token');
         this.editMessage = this.$el.data('message');
         this.editModel = {'model': this.$el.data('model-class'), 'id': this.$el.data('model-id')}
         this.linkId = this.$el.data('link-id');
@@ -82,7 +81,6 @@
 
         this.getTypeOptions();
 
-        this.labelCreate = this.$el.data('label-create');
         this.labelDeleteConfirm = this.$el.data('label-delete-confirm');
 
         this.$save.on('click', function(){ that.clickSave() });
@@ -129,7 +127,6 @@
     }
 
     EpigtorLink.prototype.clickSave = function() {
-        console.log('save link');
         var that = this;
         var newText = this.$linkText.val();
         var newType = this.$linkType.val();
@@ -182,7 +179,6 @@
     }
 
     EpigtorLink.prototype.clickDelete = function() {
-        console.log('delete link');
         var that = this;
 
         if (confirm(this.labelDeleteConfirm)) {
@@ -246,8 +242,6 @@
                     }
                     that.$linkType.append(option);
                 })
-                console.log('original type:');
-                console.log(that.originalType);
                 if (that.originalType == '') {
                     that.$linkType.val('url');
                 }
@@ -257,8 +251,6 @@
     }
 
     EpigtorLink.prototype.typeChange = function() {
-        console.log('type change');
-        console.log(this.$linkType.val());
         if (this.$linkType.val() == 'url') {
             this.$linkExternalUrl.parent().show();
             this.$linkReference.parent().hide();

@@ -31,7 +31,6 @@ var epigtorIsEditing = false;
         $(document).find('[data-control="epigtor"]').each(function(){
             let $epigtor = $(this).data('oc.epigtor');
             if ($epigtor != undefined) {
-                let $epigtor = $(this).data('oc.epigtor');
                 if ($epigtor.$controlPanel.hasClass('active')) {
                     $epigtor.clickCancel();
                 }
@@ -42,7 +41,6 @@ var epigtorIsEditing = false;
         $(document).find('[data-control="epigtor-richeditor"]').each(function(){
             let $epigtor = $(this).data('oc.epigtorRicheditor');
             if ($epigtor != undefined) {
-                let $epigtor = $(this).data('oc.epigtorRicheditor');
                 if ($epigtor.$controlPanel.hasClass('active')) {
                     $epigtor.clickCancel();
                 }
@@ -53,10 +51,6 @@ var epigtorIsEditing = false;
         $(document).find('[data-control="epigtor-image"]').each(function(){
             let $epigtor = $(this).data('oc.epigtorImage');
             if ($epigtor != undefined) {
-                let $epigtor = $(this).data('oc.epigtorImage');
-                if ($epigtor.$imageContainer.hasClass('visible')) {
-                    $epigtor.clickCancel();
-                }
                 $epigtor.hideControlPanel()
             }
         });
@@ -64,7 +58,6 @@ var epigtorIsEditing = false;
         $(document).find('[data-control="epigtor-link"]').each(function(){
             let $epigtor = $(this).data('oc.epigtorLink');
             if ($epigtor != undefined) {
-                let $epigtor = $(this).data('oc.epigtorLink');
                 if ($epigtor.$linkContainer.hasClass('visible')) {
                     $epigtor.clickCancel();
                 }

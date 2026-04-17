@@ -9,16 +9,8 @@
     data-message="{{ __SELF__.message }}"
     data-model-class="{{ __SELF__.model_class }}"
     data-model-id="{{ __SELF__.model_id }}"
-    data-image-id="{{ __SELF__.content.id }}"
     data-instance-id="{{ __SELF__.imageInstanceId }}"
     data-popup-url="{{ __SELF__.imagePopupUrl }}"
-    data-label-create="{{ __SELF__.labelCreate }}"
-    data-label-delete="{{ __SELF__.labelDelete }}"
-    data-label-delete-confirm="{{ __SELF__.labelDeleteConfirm }}"
-    data-label-save="{{ __SELF__.labelSave }}"
-    data-label-cancel="{{ __SELF__.labelCancel }}"
-    data-show-delete="{{ __SELF__.showDelete ? 'true' : 'false' }}"
-    data-element-id="{{ __SELF__.uploadId }}"
     >
     {% if __SELF__.content %}
     <span id="epigtor-{{ __SELF__.uploadId }}">

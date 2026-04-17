@@ -4,9 +4,7 @@ use Backend\Classes\FormField;
 use Backend\Classes\Controller;
 use Backend\FormWidgets\FileUpload as FileUploadWidget;
 use Illuminate\Support\Facades\Crypt;
-use October\Rain\Database\Model;
 use RainLab\Translate\Classes\Translator;
-use System\Models\File;
 
 class Image extends Controller
 {
