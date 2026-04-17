@@ -1,8 +1,11 @@
 <?php namespace Utopigs\Epigtor\Traits;
 
 use ApplicationException;
+use Backend;
+use Illuminate\Support\Facades\Crypt;
 use Input;
 use Lang;
+use RainLab\Translate\Classes\Translator;
 use Response;
 use System\Models\File;
 
@@ -33,6 +36,8 @@ trait EpigtorImage
     public $labelUpload;
     public $labelReplace;
     public $labelImageTitle;
+    public $imageInstanceId;
+    public $imagePopupUrl;
 
     private function getContentImage()
     {
@@ -69,9 +74,36 @@ trait EpigtorImage
             $this->labelUpload = Lang::get('utopigs.epigtor::lang.image.upload');
             $this->labelReplace = Lang::get('utopigs.epigtor::lang.image.replace');
             $this->labelImageTitle = Lang::get('utopigs.epigtor::lang.image.title');
+            $this->imageInstanceId = $this->makeImageInstanceId();
+            $this->imagePopupUrl = $this->makeImagePopupUrl();
         }
 
         $this->content = $content;
+    }
+
+    protected function makeImagePopupUrl(): string
+    {
+        $payload = [
+            'instance_id' => $this->imageInstanceId,
+            'message' => $this->message,
+            'model_class' => $this->model_class,
+            'model_id' => $this->model_id,
+            'session_key' => $this->imageInstanceId,
+            'locale' => Translator::instance()->getLocale(),
+        ];
+
+        return Backend::url('utopigs/epigtor/image') . '?payload=' . urlencode(Crypt::encryptString(json_encode($payload)));
+    }
+
+    protected function makeImageInstanceId(): string
+    {
+        return md5(implode('|', [
+            $this->alias,
+            $this->message,
+            $this->model_class,
+            $this->model_id,
+            uniqid('', true),
+        ]));
     }
 
     private function decorateFileAttributes($file)
@@ -246,6 +278,42 @@ trait EpigtorImage
         $file = File::findOrFail($fileId);
         $file->title = $title;
         $file->save();
+    }
+
+    public function onRefreshImage()
+    {
+        $modelClass = post('model')['model'] ?? null;
+        $modelId = post('model')['id'] ?? null;
+        $attribute = post('message');
+        $imagePartial = post('imagePartial');
+
+        if ($modelClass) {
+            $model = $modelClass::findOrFail($modelId);
+            $file = $model->$attribute;
+            $widgetId = str_slug($modelClass).'-'.$modelId.'-'.$attribute;
+        } else {
+            /** @disregard P1009 Undefined type */
+            $model = \Utopigs\Banners\Models\Image::firstOrCreate(['code' => $attribute]);
+            $file = $model->image;
+            $widgetId = 'image-'.$attribute;
+        }
+
+        if ($file) {
+            $file = $this->decorateFileAttributes($file);
+
+            return [
+                'image' => $file,
+                '#epigtor-'.$widgetId => $this->renderPartial($imagePartial, [
+                    'image' => $file
+                ])
+            ];
+        }
+
+        return [
+            '#epigtor-'.$widgetId => $this->renderPartial($this->alias.'::image-empty', [
+                'labelCreate' => Lang::get('utopigs.epigtor::lang.image.create')
+            ])
+        ];
     }
 
 }

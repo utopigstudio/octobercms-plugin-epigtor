@@ -1,0 +1,81 @@
+body.epigtor-image-backend #layout-mainmenu,
+body.epigtor-image-backend #layout-mainmenu-left,
+body.epigtor-image-backend #layout-sidenav,
+body.epigtor-image-backend #layout-sidenav-responsive,
+body.epigtor-image-backend .mainmenu-responsive {
+    display: none !important;
+}
+
+body.epigtor-image-backend #layout-body {
+    width: 100%;
+}
+
+body.epigtor-image-backend .layout-container {
+    padding: 0 !important;
+}
+
+body.epigtor-image-backend .epigtor-image-form {
+    height: 100%;
+}
+
+body.epigtor-image-backend .epigtor-image-form .padded-container {
+    padding: 20px 20px 0;
+}
+
+body.epigtor-image-backend .epigtor-image-form .form-buttons {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 99999;
+    margin: 0;
+    padding: 0;
+    width: 54px;
+    height: 26px;
+}
+
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-action-button {
+    pointer-events: auto;
+    border: none;
+    width: 26px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-size: auto 30px;
+    text-indent: -9999px;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: 1px;
+    position: absolute;
+    top: 0;
+    left: auto;
+    right: auto;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-save-button,
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-cancel-button {
+    height: 26px !important;
+    margin: 4px 2px;
+    background-repeat: no-repeat;
+}
+
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-save-button {
+    background-image: url("../../../assets/images/save-icon.png");
+    right: 0;
+}
+
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-cancel-button {
+    background-image: url("../../../assets/images/cancel-icon.png");
+    right: 28px;
+}
+
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-save-button:hover,
+body.epigtor-image-backend .epigtor-image-form .form-buttons .epigtor-cancel-button:hover {
+    background-position: 100% 0;
+}
+
+body.epigtor-image-backend .form-translatable,
+body.epigtor-image-backend .form-translatable .dropdown-menu {
+    display: none !important;
+}

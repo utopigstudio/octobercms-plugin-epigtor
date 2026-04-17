@@ -1,0 +1,37 @@
+<?= Form::open([
+    'class' => 'layout epigtor-image-form',
+]) ?>
+    <input type="hidden" name="payload" value="<?= e($payload) ?>">
+
+    <div class="layout-row">
+        <div class="padded-container">
+            <?= $formWidget->render() ?>
+        </div>
+    </div>
+
+    <div class="form-buttons">
+        <button
+            type="button"
+            class="epigtor-action-button epigtor-cancel-button"
+            data-action="cancel"
+            data-request="onCancel"
+            data-request-data="payload: '<?= e($payload) ?>'"
+            data-request-success="window.EpigtorImageWindow.onCanceled()"
+            title="Cancel"
+            aria-label="Cancel"
+        >
+            Cancel
+        </button>
+        <button
+            type="button"
+            class="epigtor-action-button epigtor-save-button"
+            data-request="onSave"
+            data-request-form=".epigtor-image-form"
+            data-request-success="window.EpigtorImageWindow.onSaved(data)"
+            title="Save"
+            aria-label="Save"
+        >
+            Save
+        </button>
+    </div>
+<?= Form::close() ?>
