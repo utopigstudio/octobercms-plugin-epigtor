@@ -222,13 +222,13 @@
 
     EpigtorLink.prototype.showLinkWidget = function() {
         if (!this.linkId) this.$delete.hide();
-        this.$linkContainer.css({
-            top: this.$el.offset().top + this.$el.outerHeight(),
-            left: this.$el.offset().left
-        });
         this.$linkText.parent().removeClass('has-error');
         this.$linkExternalUrl.parent().removeClass('has-error');
         this.$linkContainer.addClass('visible');
+        this.$linkContainer.css({
+            top: Math.max($(window).scrollTop() + 24, $(window).scrollTop() + (($(window).height() - this.$linkContainer.outerHeight()) / 2)),
+            left: Math.max($(window).scrollLeft() + 24, $(window).scrollLeft() + (($(window).width() - this.$linkContainer.outerWidth()) / 2))
+        });
         this.refreshControlPanel();
         this.$controlPanel.addClass('active');
         this.$edit.hide();
@@ -336,43 +336,43 @@
 
 function epigtorLinkModalHtml(content, elementId,
         showDelete, labelDelete, labelSave, labelCancel, labelLinkText, labelLinkType, labelLinkUrl, labelLinkReference, labelLinkIsNewTab) {
-    let deleteButton = `<button type="button" class="epigtor-link-delete btn btn-danger">${labelDelete}</button>`;
+    let deleteButton = `<button type="button" class="epigtor-link-delete epigtor-link-button epigtor-link-button-danger">${labelDelete}</button>`;
 
     return `
-    <div class="epigtor-link-container epig-popup modal-content epigtor-link epigtor" id="epigtor-link-container-${elementId}">
-        <div class="modal-body">
-            <div class="layout-row">
-                <div class="form-group">
+    <div class="epigtor-link-container epig-popup epigtor-link epigtor" id="epigtor-link-container-${elementId}">
+        <div class="epigtor-link-body">
+            <div class="epigtor-link-fields">
+                <div class="epigtor-link-field">
                     <label for="${elementId}-text">${labelLinkText}</label>
-                    <input type="text" class="form-control" name="text" value="${content.text}" id="${elementId}-text">
+                    <input type="text" class="epigtor-link-input" name="text" value="${content.text}" id="${elementId}-text">
                 </div>
-                <div class="form-group">
+                <div class="epigtor-link-field">
                     <label for="${elementId}-type">${labelLinkType}</label>
-                    <select name="type" class="form-control" id="${elementId}-type">
+                    <select name="type" class="epigtor-link-input epigtor-link-select" id="${elementId}-type">
                         <option></option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="epigtor-link-field">
                     <label for="${elementId}-external_url">${labelLinkUrl}</label>
-                    <input type="text" class="form-control" name="external_url" value="${content.external_url}" id="${elementId}-external_url">
+                    <input type="text" class="epigtor-link-input" name="external_url" value="${content.external_url}" id="${elementId}-external_url">
                 </div>
-                <div class="form-group">
+                <div class="epigtor-link-field">
                     <label for="${elementId}-reference">${labelLinkReference}</label>
-                    <select name="reference" id="${elementId}-reference">
+                    <select name="reference" class="epigtor-link-input epigtor-link-select" id="${elementId}-reference">
                         <option></option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <input type="checkbox" name="is_new_tab" ${content.is_new_tab ? 'checked' : ''} id="${elementId}-is_new_tab">
+                <div class="epigtor-link-field epigtor-link-field-checkbox">
+                    <input type="checkbox" class="epigtor-link-checkbox" name="is_new_tab" ${content.is_new_tab ? 'checked' : ''} id="${elementId}-is_new_tab">
                     <label for="${elementId}-is_new_tab">${labelLinkIsNewTab}</label>
                 </div>
                 <input type="hidden" name="type" value="${content.type}">
                 <input type="hidden" name="reference" value="${content.reference}">
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="epigtor-link-save btn btn-primary">${labelSave}</button>
-            <button type="button" class="epigtor-link-cancel btn btn-secondary">${labelCancel}</button>
+        <div class="epigtor-link-footer">
+            <button type="button" class="epigtor-link-save epigtor-link-button epigtor-link-button-primary">${labelSave}</button>
+            <button type="button" class="epigtor-link-cancel epigtor-link-button epigtor-link-button-secondary">${labelCancel}</button>
             ${showDelete ? deleteButton : ''}	
         </div>
     </div>
