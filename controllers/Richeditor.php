@@ -1,6 +1,7 @@
 <?php namespace Utopigs\Epigtor\Controllers;
 
 use Backend\Classes\Controller;
+use Cms\Classes\PageManager;
 use Illuminate\Support\Facades\Crypt;
 use October\Rain\Database\Model;
 use RainLab\Translate\Classes\Translator;
@@ -44,6 +45,7 @@ class Richeditor extends Controller
 
         // Keep output consistent with frontend rendering behavior.
         $content = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $content);
+        $content = PageManager::processMarkup($content);
 
         return [
             'saved' => true,
