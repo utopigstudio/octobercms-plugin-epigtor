@@ -80,6 +80,11 @@ class Richeditor extends Controller
             $widgetConfig->fields['content']['toolbarButtons'] = $toolbarButtons;
         }
 
+        $editorOptions = $this->resolveEditorOptions($this->payload);
+        if (!empty($editorOptions)) {
+            $widgetConfig->fields['content']['editorOptions'] = $editorOptions;
+        }
+
         $widget = $this->makeWidget('Backend\\Widgets\\Form', $widgetConfig);
         $widget->bindToController();
 
@@ -176,5 +181,26 @@ class Richeditor extends Controller
         }
 
         return Translator::instance()->getLocale();
+    }
+
+    protected function resolveEditorOptions(array $payload): array
+    {
+        $editorOptions = $payload['editor_options'] ?? null;
+
+        if (is_array($editorOptions)) {
+            return $editorOptions;
+        }
+
+        if (is_string($editorOptions) && trim($editorOptions) !== '') {
+            try {
+                $decoded = json_decode($editorOptions, true, 512, JSON_THROW_ON_ERROR);
+            } catch (\Throwable $exception) {
+                return [];
+            }
+
+            return is_array($decoded) ? $decoded : [];
+        }
+
+        return [];
     }
 }

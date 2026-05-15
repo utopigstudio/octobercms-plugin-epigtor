@@ -35,6 +35,7 @@ class Epigtor extends ComponentBase
     public $cssClass;
     public $isOldLink;
     public $isOldImage;
+    public $editorOptions;
 
     public function componentDetails()
     {
@@ -64,12 +65,12 @@ class Epigtor extends ComponentBase
             $this->addCss('assets/vendor/redactor/redactor.css');
             $this->addJs('assets/vendor/redactor/redactor.js');
 
-            $this->addCss('assets/css/epigtor.css?v=3.2.0');
-            $this->addJs('assets/js/epigtor-panel.js?v=3.2.0');
-            $this->addJs('assets/js/epigtor-plain.js?v=3.2.0');
-            $this->addJs('assets/js/epigtor-richeditor.js?v=3.2.0');
-            $this->addJs('assets/js/epigtor-image.js?v=3.2.0');
-            $this->addJs('assets/js/epigtor-link.js?v=3.2.0');
+            $this->addCss('assets/css/epigtor.css?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-panel.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-plain.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-richeditor.js?v=test-richeditor-popup');
+            $this->addJs('assets/js/epigtor-image.js?v=test-image-popup-window');
+            $this->addJs('assets/js/epigtor-link.js?v=test-richeditor-popup');
         }
     }
 
@@ -93,6 +94,19 @@ class Epigtor extends ComponentBase
         $this->message = $this->property('message');
         $this->type = $this->property('type') ?: 'plain';
         $this->toolbarButtons = $this->property('toolbarButtons');
+        $this->editorOptions = $this->property('editorOptions');
+        // Si es richeditor y no se pasa editorOptions explícitamente, buscar en el modelo
+        if (
+            $this->type === 'richeditor'
+            && empty($this->editorOptions)
+            && ($model = $this->property('model'))
+            && is_object($model)
+        ) {
+            $editorOptionsField = $this->message . '_editor_options';
+            if (isset($model->$editorOptionsField) && !empty($model->$editorOptionsField)) {
+                $this->editorOptions = $model->$editorOptionsField;
+            }
+        }
         $this->showDelete = $this->property('showDelete', false);
         $this->propertyModel = $this->property('model');
         $this->model_class = null;
@@ -116,6 +130,7 @@ class Epigtor extends ComponentBase
         // otherwise if a component doesn't have a property set, it will use the last set property
         $this->setProperty('type', '');
         $this->setProperty('toolbarButtons', '');
+        $this->setProperty('editorOptions', '');
         $this->setProperty('content', '');
         $this->setProperty('showDelete', false);
         $this->setProperty('model', '');

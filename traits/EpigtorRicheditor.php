@@ -11,6 +11,7 @@ trait EpigtorRicheditor
     public $instanceId;
     public $richeditorPopupUrl;
     public $toolbarButtons;
+    public $editorOptions;
 
     private function getContentRicheditor()
     {
@@ -72,6 +73,7 @@ trait EpigtorRicheditor
             'model_class' => $this->model_class,
             'model_id' => $this->model_id,
             'toolbar_buttons' => $this->toolbarButtons,
+            'editor_options' => $this->editorOptions,
             'locale' => Translator::instance()->getLocale(),
         ];
 
