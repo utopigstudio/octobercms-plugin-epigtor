@@ -1,6 +1,7 @@
 <?php namespace Utopigs\Epigtor\Traits;
 
 use Backend;
+use Cms\Classes\PageManager;
 use Illuminate\Support\Facades\Crypt;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Message;
@@ -20,14 +21,13 @@ trait EpigtorRicheditor
     private function renderRicheditor($content)
     {
         if (!$this->isEditor) {
+            $content = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $content);
+            $content = PageManager::processMarkup($content);
             return $content;
         }
 
+
         $contentIsEmpty = !$content;
-        if ($content) {
-            $html = $content;
-            $content = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $html);
-        }
         // Don't render [empty] placeholder - let templates/frontend handle empty state
 
         $this->content = $content;
