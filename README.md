@@ -72,11 +72,11 @@ The styles also depend on the October JavaScript Framework, so ensure the `{% fr
 
 The richeditor toolbar buttons can be customized for each control using the `toolbarButtons` attribute:
 
-    {% component 'editme' message='home.title' type="richeditor" toolbarButtons="bold,italic,insertLink" %}
+    {% component 'editme' message='home.title' type="richeditor" toolbarButtons="bold,italic,insertPageLink" %}
 
 These are the default buttons:
 
-paragraphFormat,paragraphStyle,quote,bold,italic,align,formatOL,formatUL,insertTable,insertLink,insertImage,insertVideo,insertAudio,insertFile,insertHR,fullscreen,html
+paragraphFormat,paragraphStyle,quote,bold,italic,align,formatOL,formatUL,insertTable,insertPageLink,insertImage,insertVideo,insertAudio,insertFile,insertHR,fullscreen,html
 
 
 ## Advanced richeditor default options

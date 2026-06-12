@@ -21,3 +21,4 @@ v3.1.4: Force alt on wysiwyg images
 v3.1.5: Richeditor strict pasteplain
 v3.2.0: Open richeditor and image editor in a popup, other fixes and improvements
 v3.2.1: Fix richeditor content rendering when not in editor mode
+v3.2.2: Update default richeditor advanced options
