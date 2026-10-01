@@ -39,6 +39,7 @@
         this.labelLinkIsNewTab = this.$el.data('label-link-is-new-tab');
         this.elementId = this.$el.data('element-id');
         this.cssClass = this.$el.data('css-class');
+        this.icon = this.$el.data('link-icon');
         this.isOldLink = this.$el.data('is-old-link');
 
         this.$linkContainer = $(epigtorLinkModalHtml(this.linkContent, this.elementId,
@@ -162,6 +163,7 @@
                 reference: newReference,
                 is_new_tab: newIsNewTab ? 1 : 0,
                 cssClass: this.cssClass,
+                icon: this.icon,
                 isOldLink: this.isOldLink ? 1 : 0,
             },
             complete: function(response) {

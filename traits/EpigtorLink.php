@@ -64,6 +64,10 @@ trait EpigtorLink
         $modelId = post('model')['id'];
         $attribute = post('message');
         $cssClass = post('cssClass');
+        $icon = post('icon');
+        if (!is_array($icon)) {
+            $icon = null;
+        }
         $isOldLink = post('isOldLink');
 
         if ($isOldLink) {
@@ -124,7 +128,8 @@ trait EpigtorLink
             'link' => $link,
             '#epigtor-'.$widgetId => $this->renderPartial($linkPartial, [
                 'link' => $link,
-                'cssClass' => $cssClass
+                'cssClass' => $cssClass,
+                'icon' => $icon,
             ])
         ];
     }

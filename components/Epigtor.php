@@ -33,6 +33,7 @@ class Epigtor extends ComponentBase
     public $labelSave;
     public $labelCancel;
     public $cssClass;
+    public $icon;
     public $isOldLink;
     public $isOldImage;
 
@@ -69,7 +70,7 @@ class Epigtor extends ComponentBase
             $this->addJs('assets/js/epigtor-plain.js?v=3.2.0');
             $this->addJs('assets/js/epigtor-richeditor.js?v=3.2.0');
             $this->addJs('assets/js/epigtor-image.js?v=3.2.0');
-            $this->addJs('assets/js/epigtor-link.js?v=3.2.0');
+            $this->addJs('assets/js/epigtor-link.js?v=3.2.3');
         }
     }
 
@@ -100,6 +101,7 @@ class Epigtor extends ComponentBase
         $this->content = null;
         $this->contentIsEmpty = false;
         $this->cssClass = $this->property('cssClass');
+        $this->icon = $this->property('icon');
 
         $this->isOldLink = false;
         if ($this->type == 'link' && !$this->propertyModel) {
@@ -120,6 +122,7 @@ class Epigtor extends ComponentBase
         $this->setProperty('showDelete', false);
         $this->setProperty('model', '');
         $this->setProperty('cssClass', '');
+        $this->setProperty('icon', '');
     }
 
     private function getContent()
