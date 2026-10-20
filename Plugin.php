@@ -3,6 +3,7 @@
 use System\Classes\PluginBase;
 use Utopigs\Epigtor\Models\Settings;
 use Event;
+use October\Rain\Filesystem\Definitions as FileDefinitions;
 
 class Plugin extends PluginBase
 {
@@ -52,6 +53,18 @@ class Plugin extends PluginBase
 
     public function boot()
     {
+        Event::listen('backend.page.beforeDisplay', function (\Backend\Classes\Controller $controller): void {
+            $imageExtensions = array_values(array_intersect(
+                FileDefinitions::get('image_extensions'),
+                FileDefinitions::get('default_extensions')
+            ));
+
+            $controller->addJs('/plugins/utopigs/epigtor/assets/js/richeditor-image-formats.js', [
+                'type' => 'module',
+                'data-epigtor-image-extensions' => json_encode($imageExtensions),
+            ]);
+        });
+
         $froala_custom_defaults = Settings::get('froala_custom_defaults_file');
         if ($froala_custom_defaults) {
             \Backend\Classes\Controller::extend(function ($controller) use ($froala_custom_defaults) {
