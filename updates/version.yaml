@@ -24,3 +24,4 @@ v3.2.1: Fix richeditor content rendering when not in editor mode
 v3.2.2: Update default richeditor advanced options
 v3.2.3: Add icon support to links
 v3.2.4: Respect configured image formats in the October Vue rich editor upload picker
+v3.2.5: Add lazy loading to images in the richeditor

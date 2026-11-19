@@ -74,7 +74,12 @@ class Plugin extends PluginBase
 
         Event::listen('cms.content.postProcessMarkup', function(&$markup) {
             if (empty($markup)) return $markup;
-            $markup = preg_replace('/<img(?![^>]*\balt=)([^>]*)>/i', '<img alt="" $1>', $markup);
+            if (stripos($markup, '<img') === false) return $markup;
+            $markup = preg_replace(
+                ['/<img(?![^>]*\balt=)([^>]*)>/i', '/<img\b([^>]*)>/i'],
+                ['<img alt="" $1>', '<img loading="lazy" $1>'],
+                $markup
+            );
         });
     }
 
